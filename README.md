@@ -1,6 +1,6 @@
 # DoseWise - Android Development Guide
 
-**Team Members:** Branson Crawford, Daniel Ogundare, Aaron Zhu, Ben Haydu, Talon Lusk
+**Team Members:** Branson, Daniel, Aaron, Ben, Talon
 
 ---
 
@@ -48,7 +48,7 @@ The app uses a single Activity with multiple Fragments navigated through the And
 
 ## Responsibilities
 
-### Branson Crawford - Task 1: Medication Schedule Setup
+### Branson - Task 1: Medication Schedule Setup
 
 **Owns the following files:**
 - `AddMedicationFragment.java` and `fragment_add_medication.xml`
@@ -68,7 +68,7 @@ The app uses a single Activity with multiple Fragments navigated through the And
 
 ---
 
-### Aaron Zhu - Task 2: Dose Logging
+### Aaron - Task 2: Dose Logging
 
 **Owns the following files:**
 - `HomeFragment.java` and `fragment_home.xml`
@@ -85,7 +85,7 @@ The app uses a single Activity with multiple Fragments navigated through the And
 
 ---
 
-### Ben Haydu - Task 3: Reminder Configuration
+### Ben - Task 3: Reminder Configuration
 
 **Owns the following files:**
 - `ReminderTimingFragment.java` and `fragment_reminder_timing.xml`
@@ -101,7 +101,7 @@ The app uses a single Activity with multiple Fragments navigated through the And
 
 ---
 
-### Talon Lusk - Task 4: Caregiver Monitoring
+### Talon - Task 4: Caregiver Monitoring
 
 **Owns the following files:**
 - `CaregiverDashboardFragment.java` and `fragment_caregiver_dashboard.xml`
@@ -116,7 +116,7 @@ The app uses a single Activity with multiple Fragments navigated through the And
 
 ---
 
-### Daniel Ogundare - Task 5: Refill Tracking
+### Daniel - Task 5: Refill Tracking
 
 **Owns the following files:**
 - `RefillFragment.java` and `fragment_refill.xml`
