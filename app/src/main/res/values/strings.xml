@@ -1,3 +1,54 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">DoseWise</string>
+    <string name="notification_channel_name">DoseWise Reminders</string>
+    <string name="reminder_notification_title">DoseWise Reminder</string>
+
+    <string name="reminder_timing_title">Set a reminder time</string>
+    <string name="reminder_timing_subtitle">Choose when the reminder should appear and how often it repeats.</string>
+    <string name="reminder_timing_step">Step 1 of 3</string>
+    <string name="reminder_timing_card_title">Timing and frequency</string>
+    <string name="reminder_live_summary_title">Live summary</string>
+    <string name="reminder_time_label">Reminder time</string>
+    <string name="reminder_frequency_label">Reminder frequency</string>
+    <string name="reminder_second_time_label">Second reminder time</string>
+    <string name="reminder_timing_summary_template">%1$s reminders at %2$s</string>
+    <string name="reminder_timing_summary_twice_template">Twice Daily reminders at %1$s and %2$s</string>
+    <string name="reminder_time_missing_frequency">Select a frequency</string>
+    <string name="reminder_frequency_missing">Please select a reminder frequency.</string>
+    <string name="reminder_second_time_unique_error">Please choose a different second time.</string>
+    <string name="reminder_time_not_set">Time not set</string>
+    <string name="reminder_two_times_summary_template">%1$s and %2$s</string>
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_twice_daily">Twice Daily</string>
+    <string-array name="frequency_options">
+        <item>@string/frequency_daily</item>
+        <item>@string/frequency_twice_daily</item>
+    </string-array>
+
+    <string name="reminder_tone_title">Choose a message style</string>
+    <string name="reminder_tone_subtitle">Pick the tone that best fits how you want the reminder to feel.</string>
+    <string name="reminder_tone_step">Step 2 of 3</string>
+    <string name="reminder_tone_card_title">Tone selector</string>
+    <string name="reminder_tone_hint">Caring and supportive language is helpful for mental health reminders.</string>
+    <string name="reminder_tone_selected_template">Selected tone: %1$s</string>
+    <string name="reminder_tone_caring_label">Caring &amp; Supportive</string>
+    <string name="reminder_tone_direct_label">Direct &amp; Efficient</string>
+    <string name="reminder_tone_prompt">Select a tone to preview the message.</string>
+    <string name="reminder_tone_required">Please select a tone.</string>
+    <string name="reminder_message_caring_preview">Hey, just a gentle reminder to take your medication. You’ve got this.</string>
+    <string name="reminder_message_direct_preview">Take your medication now.</string>
+    <string name="reminder_message_caring_notification">Hey, just a gentle reminder to take your medication. You’ve got this.</string>
+    <string name="reminder_message_direct_notification">Take your medication now.</string>
+    <string name="reminder_preview_label">Preview message</string>
+    <string name="reminder_review_button">Review reminder</string>
+    <string name="reminder_continue_tone_button">Continue to tone</string>
+
+    <string name="reminder_confirmation_step">Step 3 of 3</string>
+    <string name="reminder_confirmation_title">Reminder All Set</string>
+    <string name="reminder_confirmation_subtitle">Your reminder will keep firing even when the app is closed.</string>
+    <string name="reminder_confirmation_card_title">Saved reminder</string>
+    <string name="reminder_notification_card_title">Notification preview</string>
+    <string name="reminder_confirmation_summary_template">Time: %1$s\nFrequency: %2$s\nTone: %3$s</string>
+    <string name="reminder_schedule_failed">Unable to schedule the reminder right now.</string>
+    <string name="reminder_restart_button">Set Another Reminder</string>
 </resources>
