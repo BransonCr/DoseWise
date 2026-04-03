@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/reminderTimingFragment">
+
+    <fragment
+        android:id="@+id/reminderTimingFragment"
+        android:name="com.example.myapplication.ReminderTimingFragment">
+        <action
+            android:id="@+id/action_timing_to_tone"
+            app:destination="@id/reminderToneFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reminderToneFragment"
+        android:name="com.example.myapplication.ReminderToneFragment">
+        <action
+            android:id="@+id/action_tone_to_confirmation"
+            app:destination="@id/reminderConfirmationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reminderConfirmationFragment"
+        android:name="com.example.myapplication.ReminderConfirmationFragment" />
+
+</navigation>
