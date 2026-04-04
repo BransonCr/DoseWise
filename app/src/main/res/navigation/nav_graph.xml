@@ -1,12 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/reminderTimingFragment">
+    app:startDestination="@id/homeFragment">
+
+    <!-- TASK 2: DOSE LOGGING (Aaron) -->
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myapplication.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_to_dose_confirmation"
+            app:destination="@id/doseConfirmationFragment">
+            <argument
+                android:name="medicationName"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+
+        <action
+            android:id="@+id/action_home_to_missedDose"
+            app:destination="@id/missedDoseFragment" />
+
+        <action
+            android:id="@+id/action_home_to_reminderTiming"
+            app:destination="@id/reminderTimingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doseConfirmationFragment"
+        android:name="com.example.myapplication.DoseConfirmationFragment"
+        android:label="Dose Confirmation"
+        tools:layout="@layout/fragment_dose_confirmation" />
+
+    <fragment
+        android:id="@+id/missedDoseFragment"
+        android:name="com.example.myapplication.MissedDoseFragment"
+        android:label="Missed Doses"
+        tools:layout="@layout/fragment_missed_dose" />
+
+    <!-- TASK 3: REMINDER SETUP (Ben) -->
 
     <fragment
         android:id="@+id/reminderTimingFragment"
-        android:name="com.example.myapplication.ReminderTimingFragment">
+        android:name="com.example.myapplication.ReminderTimingFragment"
+        android:label="Reminder Timing"
+        tools:layout="@layout/fragment_reminder_timing">
         <action
             android:id="@+id/action_timing_to_tone"
             app:destination="@id/reminderToneFragment" />
@@ -14,7 +57,9 @@
 
     <fragment
         android:id="@+id/reminderToneFragment"
-        android:name="com.example.myapplication.ReminderToneFragment">
+        android:name="com.example.myapplication.ReminderToneFragment"
+        android:label="Reminder Tone"
+        tools:layout="@layout/fragment_reminder_tone">
         <action
             android:id="@+id/action_tone_to_confirmation"
             app:destination="@id/reminderConfirmationFragment" />
@@ -22,6 +67,15 @@
 
     <fragment
         android:id="@+id/reminderConfirmationFragment"
-        android:name="com.example.myapplication.ReminderConfirmationFragment" />
+        android:name="com.example.myapplication.ReminderConfirmationFragment"
+        android:label="Reminder Confirmation"
+        tools:layout="@layout/fragment_reminder_confirmation">
+
+        <action
+            android:id="@+id/action_confirmation_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/reminderTimingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>
