@@ -29,6 +29,10 @@
         <action
             android:id="@+id/action_home_to_reminderTiming"
             app:destination="@id/reminderTimingFragment" />
+
+        <action
+            android:id="@+id/action_home_to_addMedication"
+            app:destination="@id/addMedicationFragment" />
     </fragment>
 
     <fragment
@@ -42,6 +46,34 @@
         android:name="com.example.myapplication.MissedDoseFragment"
         android:label="Missed Doses"
         tools:layout="@layout/fragment_missed_dose" />
+
+    <!-- TASK 1: MEDICATION SETUP (Branson) -->
+
+    <fragment
+        android:id="@+id/addMedicationFragment"
+        android:name="com.example.myapplication.AddMedicationFragment"
+        android:label="Add Medication"
+        tools:layout="@layout/fragment_add_medication">
+        <action
+            android:id="@+id/action_addMedication_to_reviewMedication"
+            app:destination="@id/reviewMedicationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewMedicationFragment"
+        android:name="com.example.myapplication.ReviewMedicationFragment"
+        android:label="Review Medication"
+        tools:layout="@layout/fragment_review_medication">
+        <action
+            android:id="@+id/action_reviewMedication_to_medicationConfirmation"
+            app:destination="@id/medicationConfirmationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/medicationConfirmationFragment"
+        android:name="com.example.myapplication.MedicationConfirmationFragment"
+        android:label="Medication Confirmation"
+        tools:layout="@layout/fragment_medication_confirmation" />
 
     <!-- TASK 3: REMINDER SETUP (Ben) -->
 
