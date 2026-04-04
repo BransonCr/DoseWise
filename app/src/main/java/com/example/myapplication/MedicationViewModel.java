@@ -52,4 +52,18 @@ public class MedicationViewModel extends ViewModel {
     public void updateRefillFlag(String medicationName, boolean isLow) {
         refillAlertFlags.put(medicationName, isLow);
     }
+
+    private Medication pendingMedication = null;
+
+    public Medication getPendingMedication() {
+        return pendingMedication;
+    }
+
+    public void setPendingMedication(Medication medication) {
+        pendingMedication = medication;
+    }
+
+    public void clearPendingMedication() {
+        pendingMedication = null;
+    }
 }

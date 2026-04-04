@@ -52,6 +52,43 @@
     <string name="reminder_schedule_failed">Unable to schedule the reminder right now.</string>
     <string name="reminder_restart_button">Set Another Reminder</string>
 
+    <!-- Add Medication Screen -->
+    <string name="add_med_step">Step 1 of 3</string>
+    <string name="add_med_title">Add a Medication</string>
+    <string name="add_med_subtitle">Enter the details for your new medication.</string>
+    <string name="add_med_form_card_title">Medication details</string>
+    <string name="add_med_name_label">Medication name</string>
+    <string name="add_med_name_hint">e.g. Lisinopril</string>
+    <string name="add_med_dosage_label">Dosage</string>
+    <string name="add_med_dosage_hint">e.g. 10mg</string>
+    <string name="add_med_times_card_title">Scheduled times</string>
+    <string name="add_med_times_hint">No times added yet.</string>
+    <string name="add_med_add_time_button">+ Add time</string>
+    <string name="add_med_continue_button">Review medication</string>
+    <string name="add_med_name_required">Medication name is required.</string>
+    <string name="add_med_dosage_required">Dosage is required.</string>
+    <string name="add_med_time_required">Add at least one scheduled time.</string>
+
+    <!-- Review Medication Screen -->
+    <string name="review_med_step">Step 2 of 3</string>
+    <string name="review_med_title">Review Medication</string>
+    <string name="review_med_subtitle">Confirm the details before saving.</string>
+    <string name="review_med_card_title">Medication summary</string>
+    <string name="review_med_name_label">Name</string>
+    <string name="review_med_dosage_label">Dosage</string>
+    <string name="review_med_times_label">Scheduled times</string>
+    <string name="review_med_confirm_button">Confirm &amp; Save</string>
+    <string name="review_med_edit_button">Edit details</string>
+
+    <!-- Medication Confirmation Screen -->
+    <string name="med_confirm_step">Step 3 of 3</string>
+    <string name="med_confirm_title">Medication Added</string>
+    <string name="med_confirm_subtitle_template">%1$s has been added to your schedule.</string>
+    <string name="med_confirm_card_title">Saved medication</string>
+    <string name="med_confirm_summary_template">Name: %1$s\nDosage: %2$s\nTimes: %3$s</string>
+    <string name="med_confirm_add_another_button">Add Another Medication</string>
+    <string name="med_confirm_done_button">Done</string>
+
     <!-- Home Screen -->
     <string name="home_step">Daily Overview</string>
     <string name="home_title">Today\'s Medications</string>
@@ -59,6 +96,7 @@
     <string name="home_streak_card_title">Adherence Streak</string>
     <string name="home_medication_list_title">Scheduled Doses</string>
     <string name="home_streak_template">Current Streak: %1$d days</string>
+    <string name="home_add_medication_button">Add Medication</string>
     <string name="home_view_missed_button">View Missed Doses</string>
 
     <!-- Dose Confirmation -->
