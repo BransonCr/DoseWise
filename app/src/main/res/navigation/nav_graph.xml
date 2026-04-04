@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/reminderTimingFragment">
+    app:startDestination="@id/homeFragment">
+
+    <action
+        android:id="@+id/action_home_to_reminderTiming"
+        app:destination="@id/reminderTimingFragment" />
 
     <fragment
         android:id="@+id/reminderTimingFragment"
@@ -24,4 +29,28 @@
         android:id="@+id/reminderConfirmationFragment"
         android:name="com.example.myapplication.ReminderConfirmationFragment" />
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myapplication.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_dose_confirmation"
+            app:destination="@id/doseConfirmationFragment" />
+        <action
+            android:id="@+id/action_home_to_missedDose"
+            app:destination="@id/missedDoseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/doseConfirmationFragment"
+        android:name="com.example.myapplication.DoseConfirmationFragment"
+        android:label="Dose Confirmation"
+        tools:layout="@layout/fragment_dose_confirmation" />
+
+    <fragment
+        android:id="@+id/missedDoseFragment"
+        android:name="com.example.myapplication.MissedDoseFragment"
+        android:label="Missed Doses"
+        tools:layout="@layout/fragment_missed_dose" />
 </navigation>

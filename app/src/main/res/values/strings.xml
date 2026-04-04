@@ -51,4 +51,32 @@
     <string name="reminder_confirmation_summary_template">Time: %1$s\nFrequency: %2$s\nTone: %3$s</string>
     <string name="reminder_schedule_failed">Unable to schedule the reminder right now.</string>
     <string name="reminder_restart_button">Set Another Reminder</string>
+
+    <!-- Home Screen -->
+    <string name="home_step">Daily Overview</string>
+    <string name="home_title">Today\'s Medications</string>
+    <string name="home_subtitle">Track your doses and keep your streak going.</string>
+    <string name="home_streak_card_title">Adherence Streak</string>
+    <string name="home_medication_list_title">Scheduled Doses</string>
+    <string name="home_streak_template">Current Streak: %1$d days</string>
+    <string name="home_view_missed_button">View Missed Doses</string>
+
+    <!-- Dose Confirmation -->
+    <string name="dose_confirm_step">Log a Dose</string>
+    <string name="dose_confirm_title">Confirm Action</string>
+    <string name="dose_confirm_title_template">Log dose for %1$s?</string>
+    <string name="dose_taken_button">Mark as Taken</string>
+    <string name="dose_missed_button">Mark as Missed</string>
+    <string name="dose_cancel_button">Cancel</string>
+    <string name="dose_logged_success">Dose logged successfully!</string>
+    <string name="dose_logged_missed">Dose marked as missed.</string>
+
+    <!-- Missed Dose Screen -->
+    <string name="missed_dose_step">Alerts</string>
+    <string name="missed_dose_screen_title">Missed Doses</string>
+    <string name="missed_dose_subtitle">Review medications you skipped and take action.</string>
+    <string name="missed_dose_list_title">Missed Medications</string>
+    <string name="missed_action_hint">Tap home to reschedule or log next dose.</string>
+    <string name="no_missed_doses">Great job! No missed doses today.</string>
+    <string name="missed_return_home_button">Return Home</string>
 </resources>
