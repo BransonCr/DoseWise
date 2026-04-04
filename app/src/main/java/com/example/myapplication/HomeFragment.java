@@ -55,14 +55,20 @@ public class HomeFragment extends Fragment {
 
     // Creates a clickable card view for a single medication.
     private View createMedicationCard(Medication med) {
-        View card = LayoutInflater.from(requireContext()).inflate(R.layout.item_medication, medicationContainer, false);
+        View card = LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_medication, medicationContainer, false);
         TextView nameText = card.findViewById(R.id.medNameText);
         TextView statusText = card.findViewById(R.id.medStatusText);
         ImageView statusIcon = card.findViewById(R.id.statusIcon);
 
         nameText.setText(med.getName());
         updateStatusDisplay(statusText, statusIcon, med.getName());
+
+        // 🔗 CRITICAL: Pass medication name when navigating to confirmation
         card.setOnClickListener(v -> openDoseConfirmation(med.getName()));
+        card.setClickable(true);
+        card.setFocusable(true);
+
         return card;
     }
 
@@ -70,22 +76,26 @@ public class HomeFragment extends Fragment {
     private void updateStatusDisplay(TextView statusText, ImageView statusIcon, String medName) {
         DoseStatus status = viewModel.getDoseStatusMap().getOrDefault(medName, DoseStatus.UPCOMING);
         statusText.setText(status.name().toLowerCase());
-        int iconRes = status == DoseStatus.TAKEN ? android.R.drawable.checkbox_on_background : android.R.drawable.ic_menu_close_clear_cancel;
+        int iconRes = status == DoseStatus.TAKEN
+                ? android.R.drawable.checkbox_on_background
+                : android.R.drawable.ic_menu_close_clear_cancel;
         int colorRes = status == DoseStatus.TAKEN ? R.color.success : R.color.accent;
         statusIcon.setImageResource(iconRes);
         statusIcon.setColorFilter(ContextCompat.getColor(requireContext(), colorRes));
         statusText.setTextColor(ContextCompat.getColor(requireContext(), colorRes));
     }
 
-    // Opens the confirmation prompt for logging a dose.
+    // Opens the confirmation prompt WITH the medication name argument
     private void openDoseConfirmation(String medName) {
         Bundle args = new Bundle();
-        args.putString("medicationName", medName);
-        NavHostFragment.findNavController(this).navigate(R.id.action_home_to_dose_confirmation, args);
+        args.putString("medicationName", medName);  // ← This is what was missing
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_dose_confirmation, args);
     }
 
     // Navigates to the missed dose tracking screen.
     private void navigateToMissedDoses() {
-        NavHostFragment.findNavController(this).navigate(R.id.action_home_to_missedDose);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_missedDose);
     }
 }
