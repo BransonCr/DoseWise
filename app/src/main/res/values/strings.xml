@@ -117,4 +117,24 @@
     <string name="missed_action_hint">Tap home to reschedule or log next dose.</string>
     <string name="no_missed_doses">Great job! No missed doses today.</string>
     <string name="missed_return_home_button">Return Home</string>
+
+    <!-- Caregiver Dashboard -->
+    <string name="caregiver_monitor_title">Caregiver Monitor</string>
+    <string name="caregiver_dependent_role_label">Dependent</string>
+    <string name="caregiver_adherence_title">Today\'s Adherence</string>
+    <string name="caregiver_adherence_percentage">%1$d%%</string>
+    <string name="caregiver_taken_label">%1$d taken</string>
+    <string name="caregiver_missed_label">%1$d missed</string>
+    <string name="caregiver_alerts_tab">Alerts</string>
+    <string name="caregiver_weekly_tab">Weekly Summary</string>
+    <string name="caregiver_missed_doses_header">Missed Doses</string>
+    <string name="caregiver_no_dependent">No dependent linked</string>
+    <string name="caregiver_weekly_stats_title">Summary</string>
+    <string name="caregiver_doses_taken_label">Doses Taken</string>
+    <string name="caregiver_doses_missed_label">Doses Missed</string>
+    <string name="caregiver_adherence_rate_label">Adherence Rate</string>
+    <string name="home_view_caregiver_button">Caregiver View</string>
+    <string name="caregiver_nav_home_button">Home</string>
+    <string name="caregiver_nav_monitor_button">Monitor</string>
+
 </resources>

@@ -34,11 +34,13 @@ public class HomeFragment extends Fragment {
         View missedDoseBtn = view.findViewById(R.id.viewMissedDosesBtn);
 
         View addMedicationBtn = view.findViewById(R.id.addMedicationBtn);
+        View caregiverMonitorBtn = view.findViewById(R.id.caregiverMonitorBtn);
 
         bindStreakCount(streakText);
         renderMedicationList();
         missedDoseBtn.setOnClickListener(v -> navigateToMissedDoses());
         addMedicationBtn.setOnClickListener(v -> navigateToAddMedication());
+        caregiverMonitorBtn.setOnClickListener(v -> navigateToCaregiverDashboard());
     }
 
     // Updates the streak counter text from the ViewModel.
@@ -106,5 +108,11 @@ public class HomeFragment extends Fragment {
     private void navigateToAddMedication() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_home_to_addMedication);
+    }
+
+    // Navigates to the caregiver monitoring dashboard.
+    private void navigateToCaregiverDashboard() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_caregiverDashboard);
     }
 }
