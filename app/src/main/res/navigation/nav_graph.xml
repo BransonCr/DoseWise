@@ -33,6 +33,10 @@
         <action
             android:id="@+id/action_home_to_addMedication"
             app:destination="@id/addMedicationFragment" />
+
+        <action
+            android:id="@+id/action_home_to_caregiverDashboard"
+            app:destination="@id/caregiverDashboardFragment" />
     </fragment>
 
     <fragment
@@ -74,6 +78,21 @@
         android:name="com.example.myapplication.MedicationConfirmationFragment"
         android:label="Medication Confirmation"
         tools:layout="@layout/fragment_medication_confirmation" />
+
+    <!-- TASK 4: CAREGIVER MONITORING (Talon) -->
+
+    <fragment
+        android:id="@+id/caregiverDashboardFragment"
+        android:name="com.example.myapplication.CaregiverDashboardFragment"
+        android:label="Caregiver Dashboard"
+        tools:layout="@layout/fragment_caregiver_dashboard">
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <!-- TASK 3: REMINDER SETUP (Ben) -->
 

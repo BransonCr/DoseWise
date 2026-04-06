@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.button.MaterialButton;
 import java.util.Map;
 
@@ -49,6 +50,14 @@ public class CaregiverDashboardFragment extends Fragment {
 
         alertsTab.setOnClickListener(v -> showAlertsTab());
         weeklyTab.setOnClickListener(v -> showWeeklyTab());
+
+        view.findViewById(R.id.button).setOnClickListener(v -> navigateToHome());
+    }
+
+    // Navigates back to the home screen.
+    private void navigateToHome() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_caregiverDashboard_to_home);
     }
 
     // Sets the dependent's initials and full name from the ViewModel.
