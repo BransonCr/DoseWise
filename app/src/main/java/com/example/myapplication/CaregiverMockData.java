@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,23 +75,23 @@ public class CaregiverMockData {
 
         // --- Margaret Thompson ---
         MOCK_MEDS.put(DEPENDENT_NAMES[1], Arrays.asList(
-            new MedRecord("Lisinopril",   "10mg",   Arrays.asList("8:00 AM"),            DoseStatus.TAKEN,  0),
+            new MedRecord("Lisinopril",   "10mg",   Collections.singletonList("8:00 AM"),            DoseStatus.TAKEN,  0),
             new MedRecord("Metformin",    "500mg",  Arrays.asList("8:00 AM", "6:00 PM"), DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(3)),
-            new MedRecord("Vitamin D",    "1000IU", Arrays.asList("8:00 AM"),            DoseStatus.TAKEN,  0),
-            new MedRecord("Alendronate",  "70mg",   Arrays.asList("7:00 AM"),            DoseStatus.TAKEN,  0)
+            new MedRecord("Vitamin D",    "1000IU", Collections.singletonList("8:00 AM"),            DoseStatus.TAKEN,  0),
+            new MedRecord("Alendronate",  "70mg",   Collections.singletonList("7:00 AM"),            DoseStatus.TAKEN,  0)
         ));
 
         // --- Robert Chen ---
         MOCK_MEDS.put(DEPENDENT_NAMES[2], Arrays.asList(
-            new MedRecord("Atorvastatin", "20mg",   Arrays.asList("9:00 PM"),            DoseStatus.TAKEN,  0),
-            new MedRecord("Amlodipine",   "5mg",    Arrays.asList("8:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(5)),
-            new MedRecord("Omeprazole",   "20mg",   Arrays.asList("7:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(2))
+            new MedRecord("Atorvastatin", "20mg",   Collections.singletonList("9:00 PM"),            DoseStatus.TAKEN,  0),
+            new MedRecord("Amlodipine",   "5mg",    Collections.singletonList("8:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(5)),
+            new MedRecord("Omeprazole",   "20mg",   Collections.singletonList("7:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(2))
         ));
 
         // --- Dorothy Williams ---
         MOCK_MEDS.put(DEPENDENT_NAMES[3], Arrays.asList(
-            new MedRecord("Aspirin",       "81mg",  Arrays.asList("8:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(1)),
-            new MedRecord("Levothyroxine", "50mcg", Arrays.asList("7:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(4)),
+            new MedRecord("Aspirin",       "81mg",  Collections.singletonList("8:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(1)),
+            new MedRecord("Levothyroxine", "50mcg", Collections.singletonList("7:00 AM"),            DoseStatus.MISSED, now - TimeUnit.HOURS.toMillis(4)),
             new MedRecord("Furosemide",    "40mg",  Arrays.asList("8:00 AM", "2:00 PM"), DoseStatus.TAKEN,  0)
         ));
 

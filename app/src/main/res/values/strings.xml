@@ -136,6 +136,7 @@
     <string name="home_view_caregiver_button">Caregiver View</string>
     <string name="caregiver_nav_home_button">Home</string>
     <string name="caregiver_nav_monitor_button">Monitor</string>
+    <string name="caregiver_switch_dependent">›</string>
 
     <!-- Weekly Summary Screen -->
     <string name="weekly_summary_title">Weekly Summary</string>
