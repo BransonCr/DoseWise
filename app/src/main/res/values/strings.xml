@@ -117,4 +117,11 @@
     <string name="missed_action_hint">Tap home to reschedule or log next dose.</string>
     <string name="no_missed_doses">Great job! No missed doses today.</string>
     <string name="missed_return_home_button">Return Home</string>
+
+    <string-array name="DosageFrequency">
+        <item>Once daily (1x / day)</item>
+        <item>Twice Daily (2x / day)</item>
+        <item>Three Times Daily (3x / day)</item>
+        <item>Four Times Daily (4x / day)</item>
+    </string-array>
 </resources>
