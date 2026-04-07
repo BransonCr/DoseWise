@@ -44,8 +44,8 @@
         </activity>
 
         <meta-data
-            android:name="com.google.android.geo.AIzaSyCQBsqPaP8vGZH6SrqeqFCL7QfSaMtm1Co"
-            android:value="AIzaSyCQBsqPaP8vGZH6SrqeqFCL7QfSaMtm1Co" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_CLOUD_API_KEY}" />
     </application>
 
 </manifest>
