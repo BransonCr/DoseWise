@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> notificationPermissionLauncher =
@@ -29,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
         MedicationViewModel viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
         if (viewModel.getMedicationList().isEmpty()) {
             // Test Medication 1
-            Medication lisinopril = new Medication("Lisinopril", "10mg", Arrays.asList("09:00"));
+            Medication lisinopril = new Medication("Lisinopril", "10mg", List.of("09:00"));
             viewModel.addMedication(lisinopril);
             viewModel.updateDoseStatus("Lisinopril", DoseStatus.UPCOMING);
 
             // Test Medication 2
-            Medication aspirin = new Medication("Aspirin", "80mg", Arrays.asList("07:00"));
+            Medication aspirin = new Medication("Aspirin", "80mg", List.of("07:00"));
             viewModel.addMedication(aspirin);
             viewModel.updateDoseStatus("Aspirin", DoseStatus.TAKEN);
         }
