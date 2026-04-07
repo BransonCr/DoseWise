@@ -47,6 +47,12 @@ public class CaregiverMockData {
         return CURRENT_USER_KEY.equals(name);
     }
 
+    // Returns the medication records for the given owner, never null.
+    public static List<MedRecord> medsFor(String owner) {
+        List<MedRecord> result = MOCK_MEDS.get(owner);
+        return result != null ? result : new java.util.ArrayList<>();
+    }
+
     // Returns the weekly taken counts for the given owner, never null.
     public static int[] weeklyTakenFor(String owner) {
         int[] result = WEEKLY_TAKEN.get(owner);

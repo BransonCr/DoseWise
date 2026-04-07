@@ -54,7 +54,7 @@ public class MissedAlertListFragment extends Fragment {
             }
         } else {
             for (CaregiverMockData.MedRecord r :
-                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new java.util.ArrayList<>())) {
+                    CaregiverMockData.medsFor(owner)) {
                 if (r.status == DoseStatus.MISSED) {
                     addAlertCard(r.name, r.missedAt > 0 ? r.missedAt : null);
                     hasMissed = true;

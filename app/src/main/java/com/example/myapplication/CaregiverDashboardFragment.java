@@ -163,7 +163,7 @@ public class CaregiverDashboardFragment extends Fragment {
             total  = meds.size();
         } else {
             List<CaregiverMockData.MedRecord> meds =
-                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new ArrayList<>());
+                    CaregiverMockData.medsFor(owner);
             taken  = meds.stream().filter(r -> r.status == DoseStatus.TAKEN).count();
             missed = meds.stream().filter(r -> r.status == DoseStatus.MISSED).count();
             total  = meds.size();
@@ -187,7 +187,7 @@ public class CaregiverDashboardFragment extends Fragment {
             }
         } else {
             for (CaregiverMockData.MedRecord r :
-                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new ArrayList<>())) {
+                    CaregiverMockData.medsFor(owner)) {
                 if (r.status == DoseStatus.MISSED) {
                     addMissedCard(r.name, r.missedAt > 0 ? r.missedAt : null);
                     hasMissed = true;
