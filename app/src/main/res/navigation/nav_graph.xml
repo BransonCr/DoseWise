@@ -92,7 +92,27 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_missedAlertList"
+            app:destination="@id/missedAlertListFragment" />
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_weeklySummary"
+            app:destination="@id/weeklySummaryFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/weeklySummaryFragment"
+        android:name="com.example.myapplication.WeeklySummaryFragment"
+        android:label="Weekly Summary"
+        tools:layout="@layout/fragment_weekly_summary" />
+
+    <fragment
+        android:id="@+id/missedAlertListFragment"
+        android:name="com.example.myapplication.MissedAlertListFragment"
+        android:label="Missed Alerts"
+        tools:layout="@layout/fragment_missed_alert_list" />
 
     <!-- TASK 3: REMINDER SETUP (Ben) -->
 
