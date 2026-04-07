@@ -137,4 +137,24 @@
     <string name="caregiver_nav_home_button">Home</string>
     <string name="caregiver_nav_monitor_button">Monitor</string>
 
+    <!-- Weekly Summary Screen -->
+    <string name="weekly_summary_title">Weekly Summary</string>
+    <string name="weekly_summary_subtitle">Taken vs missed doses over the past 7 days.</string>
+    <string name="weekly_chart_title">Daily Adherence</string>
+    <string name="weekly_legend_taken">Taken</string>
+    <string name="weekly_legend_missed">Missed</string>
+    <string name="weekly_back_button">Back</string>
+    <string name="weekly_adherence_trend_title">Adherence Trend</string>
+    <string name="weekly_adherence_trend_subtitle">Daily adherence percentage over the week</string>
+    <string name="weekly_daily_breakdown_title">Daily Breakdown</string>
+    <string name="weekly_daily_breakdown_subtitle">Taken vs missed medications by day</string>
+    <string name="caregiver_switch_dependent_title">Switch Dependent</string>
+    <string name="caregiver_switch_dependent_hint">Enter dependent name</string>
+
+    <!-- Missed Alert List -->
+    <string name="missed_alert_list_title">Missed Alerts</string>
+    <string name="missed_alert_timestamp">Today</string>
+    <string name="no_missed_alerts">No missed doses to report.</string>
+    <string name="missed_alert_back_button">Back</string>
+
 </resources>
