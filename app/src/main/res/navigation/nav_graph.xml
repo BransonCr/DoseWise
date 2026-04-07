@@ -35,6 +35,10 @@
             app:destination="@id/addMedicationFragment" />
 
         <action
+            android:id="@+id/action_home_to_refill"
+            app:destination="@id/refillFragment" />
+
+        <action
             android:id="@+id/action_home_to_caregiverDashboard"
             app:destination="@id/caregiverDashboardFragment" />
     </fragment>
@@ -147,6 +151,16 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/reminderTimingFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/refillFragment"
+        android:name="com.example.myapplication.RefillFragment"
+        android:label="Refill Tracking"
+        tools:layout="@layout/fragment_refill">
+        <action
+            android:id="@+id/action_refill_to_addMedication"
+            app:destination="@id/addMedicationFragment" />
     </fragment>
 
 </navigation>
