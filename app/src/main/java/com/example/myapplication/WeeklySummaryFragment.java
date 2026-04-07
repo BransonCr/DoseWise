@@ -39,10 +39,15 @@ public class WeeklySummaryFragment extends Fragment {
                 NavHostFragment.findNavController(this).navigateUp());
     }
 
-    // Builds and renders the grouped bar chart from weekly ViewModel data.
+    // Builds and renders the grouped bar chart for the current dependent's weekly data.
     private void buildBarChart(BarChart chart) {
-        int[] taken = viewModel.getWeeklyTakenCounts();
-        int[] missed = viewModel.getWeeklyMissedCounts();
+        String owner = viewModel.getCaregiverDependentName();
+        int[] taken  = CaregiverMockData.isCurrentUser(owner)
+                ? viewModel.getWeeklyTakenCounts()
+                : CaregiverMockData.weeklyTakenFor(owner);
+        int[] missed = CaregiverMockData.isCurrentUser(owner)
+                ? viewModel.getWeeklyMissedCounts()
+                : CaregiverMockData.weeklyMissedFor(owner);
 
         List<BarEntry> takenEntries = new ArrayList<>();
         List<BarEntry> missedEntries = new ArrayList<>();

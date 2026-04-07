@@ -43,30 +43,40 @@ public class MissedAlertListFragment extends Fragment {
     // Populates the list with a card for each missed dose, or shows an empty state.
     private void renderAlertList() {
         alertListContainer.removeAllViews();
+        String owner = viewModel.getCaregiverDependentName();
         boolean hasMissed = false;
-        for (Map.Entry<String, DoseStatus> entry : viewModel.getDoseStatusMap().entrySet()) {
-            if (entry.getValue() == DoseStatus.MISSED) {
-                addAlertCard(entry.getKey());
-                hasMissed = true;
+        if (CaregiverMockData.isCurrentUser(owner)) {
+            for (Map.Entry<String, DoseStatus> entry : viewModel.getDoseStatusMap().entrySet()) {
+                if (entry.getValue() == DoseStatus.MISSED) {
+                    addAlertCard(entry.getKey(), viewModel.getMissedTimestamp(entry.getKey()));
+                    hasMissed = true;
+                }
+            }
+        } else {
+            for (CaregiverMockData.MedRecord r :
+                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new java.util.ArrayList<>())) {
+                if (r.status == DoseStatus.MISSED) {
+                    addAlertCard(r.name, r.missedAt > 0 ? r.missedAt : null);
+                    hasMissed = true;
+                }
             }
         }
         if (!hasMissed) showEmptyState();
     }
 
     // Inflates and adds an alert card for the given medication name with its timestamp.
-    private void addAlertCard(String medName) {
+    private void addAlertCard(String medName, Long timestamp) {
         View card = LayoutInflater.from(requireContext())
                 .inflate(R.layout.item_missed_alert, alertListContainer, false);
         ((TextView) card.findViewById(R.id.alertMedName)).setText(medName);
-        ((TextView) card.findViewById(R.id.alertTimestamp)).setText(formatTimestamp(medName));
+        ((TextView) card.findViewById(R.id.alertTimestamp)).setText(formatTimestamp(timestamp));
         alertListContainer.addView(card);
     }
 
-    // Returns a formatted timestamp string for the missed dose, or a fallback label.
-    private String formatTimestamp(String medName) {
-        Long ts = viewModel.getMissedTimestamp(medName);
-        if (ts == null) return getString(R.string.missed_alert_timestamp);
-        return new SimpleDateFormat("MMM d 'at' h:mm a", Locale.getDefault()).format(new Date(ts));
+    // Returns a formatted timestamp string, or a fallback label if null.
+    private String formatTimestamp(Long timestamp) {
+        if (timestamp == null) return getString(R.string.missed_alert_timestamp);
+        return new SimpleDateFormat("MMM d 'at' h:mm a", Locale.getDefault()).format(new Date(timestamp));
     }
 
     // Shows a message when there are no missed alerts to display.

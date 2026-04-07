@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -25,13 +27,17 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.android.material.button.MaterialButton;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 // Displays caregiver monitoring dashboard with alerts and weekly summary tabs.
 public class CaregiverDashboardFragment extends Fragment {
     private MedicationViewModel viewModel;
+    private View rootView;
     private View alertsContent;
     private View weeklyContent;
     private LinearLayout missedListContainer;
@@ -49,6 +55,8 @@ public class CaregiverDashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
+        CaregiverMockData.seed(viewModel);
+        rootView = view;
 
         alertsContent = view.findViewById(R.id.alertsContent);
         weeklyContent = view.findViewById(R.id.weeklyContent);
@@ -58,13 +66,8 @@ public class CaregiverDashboardFragment extends Fragment {
         initialsText = view.findViewById(R.id.dependentInitials);
         nameText = view.findViewById(R.id.dependentNameText);
 
-        bindDependentInfo(initialsText, nameText);
-        bindAdherenceStats(view.findViewById(R.id.adherencePercentageText),
-                view.findViewById(R.id.takenCountText), view.findViewById(R.id.missedCountText));
-        renderMissedDoses();
-        bindWeeklySummaryStats(view);
-        buildAdherenceTrendChart(view.findViewById(R.id.adherenceTrendChart));
-        buildDailyBreakdownChart(view.findViewById(R.id.dailyBreakdownChart));
+        applyWindowInsets(view);
+        refreshDashboard();
 
         alertsTab.setOnClickListener(v -> showAlertsTab());
         weeklyTab.setOnClickListener(v -> showWeeklyTab());
@@ -72,24 +75,65 @@ public class CaregiverDashboardFragment extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(v -> navigateToHome());
     }
 
+    // Applies system bar insets so the header clears the status bar and navbar clears the gesture bar.
+    private void applyWindowInsets(View view) {
+        int p = (int) (24 * getResources().getDisplayMetrics().density);
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.findViewById(R.id.headerSection).setPadding(p, bars.top + p, p, p);
+            view.findViewById(R.id.navbar).setPadding(0, 0, 0, bars.bottom);
+            return insets;
+        });
+    }
+
     private void navigateToHome() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_caregiverDashboard_to_home);
     }
 
+    // Shows a single-choice dialog to switch the linked dependent.
     private void showSwitchDependentDialog() {
-        EditText input = new EditText(requireContext());
-        input.setHint(R.string.caregiver_switch_dependent_hint);
-        input.setText(viewModel.getCaregiverDependentName());
+        String current = viewModel.getCaregiverDependentName();
+        String[] names = CaregiverMockData.DEPENDENT_NAMES;
+        int checkedIndex = -1;
+        for (int i = 0; i < names.length; i++) {
+            if (names[i].equals(current)) { checkedIndex = i; break; }
+        }
+        final int[] selected = {checkedIndex};
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.caregiver_switch_dependent_title)
-                .setView(input)
+                .setSingleChoiceItems(names, checkedIndex, (dialog, which) -> selected[0] = which)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    viewModel.setCaregiverDependentName(input.getText().toString().trim());
-                    bindDependentInfo(initialsText, nameText);
+                    if (selected[0] >= 0) {
+                        viewModel.setCaregiverDependentName(names[selected[0]]);
+                        refreshDashboard();
+                    }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+    // Re-binds all dashboard data for the currently selected dependent.
+    private void refreshDashboard() {
+        bindDependentInfo(initialsText, nameText);
+        bindAdherenceStats(rootView.findViewById(R.id.adherencePercentageText),
+                rootView.findViewById(R.id.takenCountText), rootView.findViewById(R.id.missedCountText));
+        renderMissedDoses();
+        bindWeeklySummaryStats(rootView);
+        buildAdherenceTrendChart(rootView.findViewById(R.id.adherenceTrendChart));
+        buildDailyBreakdownChart(rootView.findViewById(R.id.dailyBreakdownChart));
+    }
+
+    // Returns weekly taken counts from ViewModel for current user, or mock data for dependents.
+    private int[] getWeeklyTaken(String owner) {
+        if (CaregiverMockData.isCurrentUser(owner)) return viewModel.getWeeklyTakenCounts();
+        return CaregiverMockData.weeklyTakenFor(owner);
+    }
+
+    // Returns weekly missed counts from ViewModel for current user, or mock data for dependents.
+    private int[] getWeeklyMissed(String owner) {
+        if (CaregiverMockData.isCurrentUser(owner)) return viewModel.getWeeklyMissedCounts();
+        return CaregiverMockData.weeklyMissedFor(owner);
     }
 
     private void bindDependentInfo(TextView initialsText, TextView nameText) {
@@ -108,11 +152,22 @@ public class CaregiverDashboardFragment extends Fragment {
     }
 
     private void bindAdherenceStats(TextView percentageText, TextView takenText, TextView missedText) {
-        int total = viewModel.getMedicationList().size();
-        long taken = viewModel.getDoseStatusMap().values().stream()
-                .filter(s -> s == DoseStatus.TAKEN).count();
-        long missed = viewModel.getDoseStatusMap().values().stream()
-                .filter(s -> s == DoseStatus.MISSED).count();
+        String owner = viewModel.getCaregiverDependentName();
+        long taken, missed;
+        int total;
+        if (CaregiverMockData.isCurrentUser(owner)) {
+            List<Medication> meds = viewModel.getMedicationList();
+            Map<String, DoseStatus> statusMap = viewModel.getDoseStatusMap();
+            taken  = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.TAKEN).count();
+            missed = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.MISSED).count();
+            total  = meds.size();
+        } else {
+            List<CaregiverMockData.MedRecord> meds =
+                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new ArrayList<>());
+            taken  = meds.stream().filter(r -> r.status == DoseStatus.TAKEN).count();
+            missed = meds.stream().filter(r -> r.status == DoseStatus.MISSED).count();
+            total  = meds.size();
+        }
         int percentage = total > 0 ? (int) (taken * 100 / total) : 0;
         percentageText.setText(getString(R.string.caregiver_adherence_percentage, percentage));
         takenText.setText(getString(R.string.caregiver_taken_label, taken));
@@ -121,21 +176,36 @@ public class CaregiverDashboardFragment extends Fragment {
 
     private void renderMissedDoses() {
         missedListContainer.removeAllViews();
+        String owner = viewModel.getCaregiverDependentName();
         boolean hasMissed = false;
-        for (Map.Entry<String, DoseStatus> entry : viewModel.getDoseStatusMap().entrySet()) {
-            if (entry.getValue() == DoseStatus.MISSED) {
-                addMissedCard(entry.getKey());
-                hasMissed = true;
+        if (CaregiverMockData.isCurrentUser(owner)) {
+            for (Map.Entry<String, DoseStatus> entry : viewModel.getDoseStatusMap().entrySet()) {
+                if (entry.getValue() == DoseStatus.MISSED) {
+                    addMissedCard(entry.getKey(), viewModel.getMissedTimestamp(entry.getKey()));
+                    hasMissed = true;
+                }
+            }
+        } else {
+            for (CaregiverMockData.MedRecord r :
+                    CaregiverMockData.MOCK_MEDS.getOrDefault(owner, new ArrayList<>())) {
+                if (r.status == DoseStatus.MISSED) {
+                    addMissedCard(r.name, r.missedAt > 0 ? r.missedAt : null);
+                    hasMissed = true;
+                }
             }
         }
         if (!hasMissed) showEmptyState();
     }
 
-    private void addMissedCard(String medName) {
+    // Inflates and adds a missed dose card showing the medication name and timestamp.
+    private void addMissedCard(String medName, Long timestamp) {
         View card = LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_missed_dose, missedListContainer, false);
-        ((TextView) card.findViewById(R.id.missedMedName)).setText(medName);
-        ((TextView) card.findViewById(R.id.missedActionHint)).setText(R.string.missed_action_hint);
+                .inflate(R.layout.item_missed_alert, missedListContainer, false);
+        ((TextView) card.findViewById(R.id.alertMedName)).setText(medName);
+        String ts = timestamp != null
+                ? new SimpleDateFormat("MMM d 'at' h:mm a", Locale.getDefault()).format(new Date(timestamp))
+                : getString(R.string.missed_alert_timestamp);
+        ((TextView) card.findViewById(R.id.alertTimestamp)).setText(ts);
         missedListContainer.addView(card);
     }
 
@@ -148,10 +218,11 @@ public class CaregiverDashboardFragment extends Fragment {
     }
 
     private void bindWeeklySummaryStats(View view) {
-        long taken = viewModel.getDoseStatusMap().values().stream()
-                .filter(s -> s == DoseStatus.TAKEN).count();
-        long missed = viewModel.getDoseStatusMap().values().stream()
-                .filter(s -> s == DoseStatus.MISSED).count();
+        String owner = viewModel.getCaregiverDependentName();
+        int[] takenArr = getWeeklyTaken(owner);
+        int[] missedArr = getWeeklyMissed(owner);
+        long taken = 0, missed = 0;
+        for (int i = 0; i < 7; i++) { taken += takenArr[i]; missed += missedArr[i]; }
         long total = taken + missed;
         int rate = total > 0 ? (int) (taken * 100 / total) : 0;
         ((TextView) view.findViewById(R.id.weeklyTakenCount)).setText(String.valueOf(taken));
@@ -162,8 +233,9 @@ public class CaregiverDashboardFragment extends Fragment {
 
     // Builds the Adherence Trend line chart showing daily adherence % for the past 7 days.
     private void buildAdherenceTrendChart(LineChart chart) {
-        int[] taken = viewModel.getWeeklyTakenCounts();
-        int[] missed = viewModel.getWeeklyMissedCounts();
+        String owner = viewModel.getCaregiverDependentName();
+        int[] taken = getWeeklyTaken(owner);
+        int[] missed = getWeeklyMissed(owner);
         String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
         List<Entry> entries = new ArrayList<>();
@@ -189,7 +261,7 @@ public class CaregiverDashboardFragment extends Fragment {
         xAxis.setAxisMaximum(6.5f);
 
         chart.getAxisLeft().setAxisMinimum(0f);
-        chart.getAxisLeft().setAxisMaximum(100f);
+        chart.getAxisLeft().setAxisMaximum(110f);
         chart.getAxisRight().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.getLegend().setEnabled(false);
@@ -200,8 +272,9 @@ public class CaregiverDashboardFragment extends Fragment {
 
     // Builds the Daily Breakdown grouped bar chart showing taken vs missed per day.
     private void buildDailyBreakdownChart(BarChart chart) {
-        int[] taken = viewModel.getWeeklyTakenCounts();
-        int[] missed = viewModel.getWeeklyMissedCounts();
+        String owner = viewModel.getCaregiverDependentName();
+        int[] taken = getWeeklyTaken(owner);
+        int[] missed = getWeeklyMissed(owner);
         String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
         List<BarEntry> takenEntries = new ArrayList<>();
