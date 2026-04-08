@@ -1,5 +1,4 @@
 package com.example.myapplication;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,6 @@ public class HomeFragment extends Fragment {
         medicationContainer = view.findViewById(R.id.medicationListContainer);
         TextView streakText = view.findViewById(R.id.streakCountText);
         View missedDoseBtn = view.findViewById(R.id.viewMissedDosesBtn);
-
         View addMedicationBtn = view.findViewById(R.id.addMedicationBtn);
         View caregiverMonitorBtn = view.findViewById(R.id.caregiverMonitorBtn);
 
@@ -69,22 +67,34 @@ public class HomeFragment extends Fragment {
         nameText.setText(med.getName());
         updateStatusDisplay(statusText, statusIcon, med.getName());
 
-        // 🔗 CRITICAL: Pass medication name when navigating to confirmation
+        // CRITICAL: Pass medication name when navigating to confirmation
         card.setOnClickListener(v -> openDoseConfirmation(med.getName()));
         card.setClickable(true);
         card.setFocusable(true);
-
         return card;
     }
 
     // Sets the status icon, label, and color for a medication.
+    // FIXED (Problem 1): Differentiates UPCOMING (neutral clock/grey) from MISSED (red X/accent).
     private void updateStatusDisplay(TextView statusText, ImageView statusIcon, String medName) {
         DoseStatus status = viewModel.getDoseStatusMap().getOrDefault(medName, DoseStatus.UPCOMING);
         statusText.setText(status.name().toLowerCase());
-        int iconRes = status == DoseStatus.TAKEN
-                ? android.R.drawable.checkbox_on_background
-                : android.R.drawable.ic_menu_close_clear_cancel;
-        int colorRes = status == DoseStatus.TAKEN ? R.color.success : R.color.accent;
+
+        int iconRes;
+        int colorRes;
+
+        if (status == DoseStatus.TAKEN) {
+            iconRes = android.R.drawable.checkbox_on_background;
+            colorRes = R.color.success;
+        } else if (status == DoseStatus.MISSED) {
+            iconRes = android.R.drawable.ic_menu_close_clear_cancel;
+            colorRes = R.color.accent;
+        } else { // UPCOMING
+            // Neutral clock icon for future actions
+            iconRes = android.R.drawable.ic_menu_recent_history;
+            colorRes = R.color.text_secondary;
+        }
+
         statusIcon.setImageResource(iconRes);
         statusIcon.setColorFilter(ContextCompat.getColor(requireContext(), colorRes));
         statusText.setTextColor(ContextCompat.getColor(requireContext(), colorRes));
@@ -93,7 +103,7 @@ public class HomeFragment extends Fragment {
     // Opens the confirmation prompt WITH the medication name argument
     private void openDoseConfirmation(String medName) {
         Bundle args = new Bundle();
-        args.putString("medicationName", medName);  // ← This is what was missing
+        args.putString("medicationName", medName);  // 📝 This is what was missing
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_home_to_dose_confirmation, args);
     }

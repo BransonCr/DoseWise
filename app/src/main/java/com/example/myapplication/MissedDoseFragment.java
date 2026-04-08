@@ -1,5 +1,4 @@
 package com.example.myapplication;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,8 @@ public class MissedDoseFragment extends Fragment {
         Button backBtn = view.findViewById(R.id.returnHomeBtn);
 
         renderMissedDoses();
-        backBtn.setOnClickListener(v -> navigateBack());
+        // FIXED (Problem 9): Renamed for clarity and uses navigateUp() for standard back behavior
+        backBtn.setOnClickListener(v -> goBack());
     }
 
     // Clears the list and populates it with currently missed medications.
@@ -68,8 +68,9 @@ public class MissedDoseFragment extends Fragment {
         missedListContainer.addView(emptyText);
     }
 
-    // Returns to the main home screen.
-    private void navigateBack() {
-        NavHostFragment.findNavController(this).popBackStack();
+    // FIXED (Problem 9): Uses navigateUp() to properly respect the navigation stack
+    // regardless of whether the user arrived from Home or Caregiver Monitor.
+    private void goBack() {
+        NavHostFragment.findNavController(this).navigateUp();
     }
 }
