@@ -116,7 +116,7 @@
     <string name="missed_dose_list_title">Missed Medications</string>
     <string name="missed_action_hint">Tap home to reschedule or log next dose.</string>
     <string name="no_missed_doses">Great job! No missed doses today.</string>
-    <string name="missed_return_home_button">Return Home</string>
+    <string name="missed_return_home_button">Back</string>
 
     <string-array name="DosageFrequency">
         <item>Once daily (1x / day)</item>
