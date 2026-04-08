@@ -45,6 +45,8 @@ public class CaregiverDashboardFragment extends Fragment {
     private MaterialButton weeklyTab;
     private TextView initialsText;
     private TextView nameText;
+    private TextView roleText;
+    private TextView upcomingCountText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class CaregiverDashboardFragment extends Fragment {
         weeklyTab = view.findViewById(R.id.weeklyTab);
         initialsText = view.findViewById(R.id.dependentInitials);
         nameText = view.findViewById(R.id.dependentNameText);
+        roleText = view.findViewById(R.id.dependentRoleText);
+        upcomingCountText = view.findViewById(R.id.upcomingCountText);
 
         applyWindowInsets(view);
         refreshDashboard();
@@ -141,6 +145,7 @@ public class CaregiverDashboardFragment extends Fragment {
         if (name == null || name.isEmpty()) {
             initialsText.setText("?");
             nameText.setText(R.string.caregiver_no_dependent);
+            roleText.setText(R.string.caregiver_dependent_role_label);
             return;
         }
         String[] parts = name.trim().split("\\s+");
@@ -149,29 +154,34 @@ public class CaregiverDashboardFragment extends Fragment {
                 : String.valueOf(parts[0].charAt(0));
         initialsText.setText(initials.toUpperCase());
         nameText.setText(name);
+        roleText.setText(CaregiverMockData.isCurrentUser(name)
+                ? getString(R.string.caregiver_my_profile_label)
+                : getString(R.string.caregiver_dependent_role_label));
     }
 
     private void bindAdherenceStats(TextView percentageText, TextView takenText, TextView missedText) {
         String owner = viewModel.getCaregiverDependentName();
-        long taken, missed;
+        long taken, missed, upcoming;
         int total;
         if (CaregiverMockData.isCurrentUser(owner)) {
             List<Medication> meds = viewModel.getMedicationList();
             Map<String, DoseStatus> statusMap = viewModel.getDoseStatusMap();
-            taken  = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.TAKEN).count();
-            missed = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.MISSED).count();
-            total  = meds.size();
+            taken    = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.TAKEN).count();
+            missed   = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.MISSED).count();
+            upcoming = meds.stream().filter(m -> statusMap.getOrDefault(m.getName(), DoseStatus.UPCOMING) == DoseStatus.UPCOMING).count();
+            total    = meds.size();
         } else {
-            List<CaregiverMockData.MedRecord> meds =
-                    CaregiverMockData.medsFor(owner);
-            taken  = meds.stream().filter(r -> r.status == DoseStatus.TAKEN).count();
-            missed = meds.stream().filter(r -> r.status == DoseStatus.MISSED).count();
-            total  = meds.size();
+            List<CaregiverMockData.MedRecord> meds = CaregiverMockData.medsFor(owner);
+            taken    = meds.stream().filter(r -> r.status == DoseStatus.TAKEN).count();
+            missed   = meds.stream().filter(r -> r.status == DoseStatus.MISSED).count();
+            upcoming = meds.stream().filter(r -> r.status == DoseStatus.UPCOMING).count();
+            total    = meds.size();
         }
         int percentage = total > 0 ? (int) (taken * 100 / total) : 0;
         percentageText.setText(getString(R.string.caregiver_adherence_percentage, percentage));
         takenText.setText(getString(R.string.caregiver_taken_label, taken));
         missedText.setText(getString(R.string.caregiver_missed_label, missed));
+        upcomingCountText.setText(getString(R.string.caregiver_upcoming_label, upcoming));
     }
 
     private void renderMissedDoses() {
