@@ -140,7 +140,7 @@
                 android:layout_height="match_parent"
                 android:backgroundTint="@color/primary"
                 android:gravity="center"
-                android:marginLeft="40dp"
+                android:layout_marginLeft="40dp"
                 android:text="Call Pharmacy"
                 android:textColor="@color/white"
                 android:textSize="10sp"
