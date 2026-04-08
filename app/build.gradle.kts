@@ -15,7 +15,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders["GOOGLE_CLOUD_API_KEY"] = (project.findProperty("GOOGLE_CLOUD_API_KEY") as String?) ?: ""
     }
 
     buildTypes {
