@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 // Lets the user enter medication name, dosage, and one or more scheduled times.
 public class AddMedicationFragment extends Fragment {
@@ -44,13 +41,26 @@ public class AddMedicationFragment extends Fragment {
         timesContainer = view.findViewById(R.id.timesContainer);
         noTimesText = view.findViewById(R.id.noTimesText);
 
-        view.findViewById(R.id.addTimeBtn).setOnClickListener(v -> showTimePicker());
+        // Navigate to Reminder Builder when Add Timer is clicked
+        view.findViewById(R.id.addTimeBtn).setOnClickListener(v -> {
+            saveCurrentStateToViewModel();
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_addMedication_to_reminderTiming);
+        });
+
         view.findViewById(R.id.continueBtn).setOnClickListener(v -> onContinueClicked());
 
         restoreFormStateIfReturningFromReview();
     }
 
-    // Pre-fills the form with pending medication data when the user presses Edit from the review screen.
+    // Saves the current text input to the ViewModel so it's preserved during navigation.
+    private void saveCurrentStateToViewModel() {
+        String name = nameInput.getText().toString().trim();
+        String dosage = dosageInput.getText().toString().trim();
+        viewModel.setPendingMedication(new Medication(name, dosage, new ArrayList<>(scheduledTimes)));
+    }
+
+    // Pre-fills the form with pending medication data when the user returns to this screen.
     private void restoreFormStateIfReturningFromReview() {
         Medication pending = viewModel.getPendingMedication();
         if (pending != null) {
@@ -60,24 +70,6 @@ public class AddMedicationFragment extends Fragment {
             scheduledTimes.addAll(pending.getScheduledTimes());
             rebuildTimesUI();
         }
-    }
-
-    // Opens a TimePickerDialog and adds the selected time to the list.
-    private void showTimePicker() {
-        Calendar now = Calendar.getInstance();
-        int hour = now.get(Calendar.HOUR_OF_DAY);
-        int minute = now.get(Calendar.MINUTE);
-
-        new TimePickerDialog(requireContext(), (picker, selectedHour, selectedMinute) -> {
-            String time = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
-            if (!scheduledTimes.contains(time)) {
-                scheduledTimes.add(time);
-                addTimeRow(time);
-                noTimesText.setVisibility(View.GONE);
-            } else {
-                Toast.makeText(requireContext(), "That time is already added.", Toast.LENGTH_SHORT).show();
-            }
-        }, hour, minute, true).show();
     }
 
     // Adds a time row with a remove button to the times container.

@@ -51,6 +51,7 @@
     <string name="reminder_confirmation_summary_template">Time: %1$s\nFrequency: %2$s\nTone: %3$s</string>
     <string name="reminder_schedule_failed">Unable to schedule the reminder right now.</string>
     <string name="reminder_restart_button">Set Another Reminder</string>
+    <string name="reminder_add_to_med_button">Add to Medication</string>
 
     <!-- Add Medication Screen -->
     <string name="add_med_step">Step 1 of 3</string>
