@@ -44,6 +44,11 @@ public class PharmacyLocatorFragment extends AppCompatActivity implements OnMapR
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        View backBtn = findViewById(R.id.button);
+        if (backBtn != null) {
+            backBtn.setOnClickListener(v -> finish());
+        }
     }
 
     @Override

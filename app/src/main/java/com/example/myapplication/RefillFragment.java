@@ -163,8 +163,8 @@ public class RefillFragment extends Fragment {
                 Button findBtn = itemView.findViewById(R.id.findPharmacyBtn);
                 findBtn.setVisibility(View.VISIBLE);
                 findBtn.setOnClickListener(v -> {
-                    Intent intent = new Intent(getActivity(), PharmacyLocatorFragment.class);
-                    startActivity(intent);
+                    androidx.navigation.fragment.NavHostFragment.findNavController(this)
+                            .navigate(R.id.action_refill_to_pharmacyLocator);
                 });
             }
 

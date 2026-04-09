@@ -41,6 +41,10 @@
         <action
             android:id="@+id/action_home_to_caregiverDashboard"
             app:destination="@id/caregiverDashboardFragment" />
+
+        <action
+            android:id="@+id/action_home_to_pharmacyLocator"
+            app:destination="@id/pharmacyLocatorActivity" />
     </fragment>
 
     <fragment
@@ -161,6 +165,14 @@
         <action
             android:id="@+id/action_refill_to_addMedication"
             app:destination="@id/addMedicationFragment" />
+        <action
+            android:id="@+id/action_refill_to_pharmacyLocator"
+            app:destination="@id/pharmacyLocatorActivity" />
     </fragment>
+
+    <activity
+        android:id="@+id/pharmacyLocatorActivity"
+        android:name="com.example.myapplication.PharmacyLocatorFragment"
+        android:label="Pharmacy Locator" />
 
 </navigation>
