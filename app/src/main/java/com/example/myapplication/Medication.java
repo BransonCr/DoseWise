@@ -3,9 +3,9 @@ package com.example.myapplication;
 import java.util.List;
 
 public class Medication {
-    private String name;
-    private String dosage;
-    private List<String> scheduledTimes;
+    private final String name;
+    private final String dosage;
+    private final List<String> scheduledTimes;
 
     public Medication(String name, String dosage, List<String> scheduledTimes) {
         this.name = name;

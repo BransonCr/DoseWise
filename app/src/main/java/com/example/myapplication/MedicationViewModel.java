@@ -53,6 +53,34 @@ public class MedicationViewModel extends ViewModel {
         refillAlertFlags.put(medicationName, isLow);
     }
 
+    private final Map<String, Long> missedDoseTimestamps = new HashMap<>();
+    private final int[] weeklyTakenCounts = new int[7];
+    private final int[] weeklyMissedCounts = new int[7];
+
+    public void recordMissedTimestamp(String medicationName) {
+        missedDoseTimestamps.put(medicationName, System.currentTimeMillis());
+    }
+
+    public Long getMissedTimestamp(String medicationName) {
+        return missedDoseTimestamps.get(medicationName);
+    }
+
+    public int[] getWeeklyTakenCounts() {
+        return weeklyTakenCounts;
+    }
+
+    public int[] getWeeklyMissedCounts() {
+        return weeklyMissedCounts;
+    }
+
+    public void incrementWeeklyTaken(int dayIndex) {
+        if (dayIndex >= 0 && dayIndex < 7) weeklyTakenCounts[dayIndex]++;
+    }
+
+    public void incrementWeeklyMissed(int dayIndex) {
+        if (dayIndex >= 0 && dayIndex < 7) weeklyMissedCounts[dayIndex]++;
+    }
+
     private Medication pendingMedication = null;
 
     public Medication getPendingMedication() {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/icon_home"
+        android:title="@string/caregiver_nav_home_button" />
+    <item
+        android:id="@+id/caregiverDashboardFragment"
+        android:icon="@drawable/icon_graph"
+        android:title="@string/caregiver_nav_monitor_button" />
+</menu>

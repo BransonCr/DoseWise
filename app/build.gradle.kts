@@ -15,6 +15,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Added manifestPlaceholders to resolve the GOOGLE_CLOUD_API_KEY error.
+        // If you have a real key, you can replace "YOUR_API_KEY" here or
+        // add it to your local.properties file as GOOGLE_CLOUD_API_KEY=your_key
+        manifestPlaceholders["GOOGLE_CLOUD_API_KEY"] = "YOUR_API_KEY"
     }
 
     buildTypes {
@@ -33,7 +38,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -41,6 +45,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.play.services.maps)
+    implementation(libs.mpandroidchart)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

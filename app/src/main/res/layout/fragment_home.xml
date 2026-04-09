@@ -138,6 +138,39 @@
                 android:textAllCaps="false"
                 app:backgroundTint="@color/primary"
                 app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/setupRemindersBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_setup_reminders_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/secondary"
+                app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refillTrackingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_refill_tracking_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/findPharmacyBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_find_pharmacy_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/secondary"
+                app:cornerRadius="18dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

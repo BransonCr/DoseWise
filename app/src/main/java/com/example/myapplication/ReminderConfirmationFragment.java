@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class ReminderConfirmationFragment extends Fragment {
 
-    private ReminderViewModel viewModel;
+    private ReminderViewModel reminderViewModel;
+    private MedicationViewModel medicationViewModel;
 
     // Inflates the confirmation layout.
     @Override
@@ -26,79 +32,116 @@ public class ReminderConfirmationFragment extends Fragment {
     // Shows the saved reminder summary and schedules the notification.
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(requireActivity()).get(ReminderViewModel.class);
+        reminderViewModel = new ViewModelProvider(requireActivity()).get(ReminderViewModel.class);
+        medicationViewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
 
         TextView summary = view.findViewById(R.id.summaryText);
         TextView messagePreview = view.findViewById(R.id.messagePreviewText);
-        Button restartBtn = view.findViewById(R.id.restartBtn);
+        Button actionBtn = view.findViewById(R.id.restartBtn);
 
         showReminderSummary(summary, messagePreview);
         scheduleNotificationOnce();
 
-        restartBtn.setOnClickListener(v -> restartFlow());
+        // If there's a pending medication, change button text and behavior.
+        if (medicationViewModel.getPendingMedication() != null) {
+            actionBtn.setText(R.string.reminder_add_to_med_button);
+            actionBtn.setOnClickListener(v -> addTimesToMedicationAndReturn());
+        } else {
+            actionBtn.setText(R.string.reminder_restart_button);
+            actionBtn.setOnClickListener(v -> restartFlow());
+        }
     }
 
     // Formats the confirmation details for the user.
     private void showReminderSummary(TextView summary, TextView messagePreview) {
         String time = buildTimeSummary();
-        String frequency = viewModel.getFrequency() == null
+        String frequency = reminderViewModel.getFrequency() == null
                 ? getString(R.string.reminder_frequency_missing)
-                : viewModel.getFrequency();
-        String tone = ReminderMessageFormatter.getToneLabel(requireContext(), viewModel.getTone());
+                : reminderViewModel.getFrequency();
+        String tone = ReminderMessageFormatter.getToneLabel(requireContext(), reminderViewModel.getTone());
 
         summary.setText(getString(R.string.reminder_confirmation_summary_template, time, frequency, tone));
-        messagePreview.setText(ReminderMessageFormatter.getNotificationMessage(requireContext(), viewModel.getTone()));
+        messagePreview.setText(ReminderMessageFormatter.getNotificationMessage(requireContext(), reminderViewModel.getTone()));
     }
 
     // Schedules the reminder once when the confirmation screen is shown.
     private void scheduleNotificationOnce() {
-        // Avoid scheduling duplicates if the user revisits this screen.
-        if (viewModel.isReminderScheduled() || !viewModel.hasReminderTime()) {
+        if (reminderViewModel.isReminderScheduled() || !reminderViewModel.hasReminderTime()) {
             return;
         }
 
-        Integer secondaryHour = viewModel.hasSecondaryReminderTime()
-            ? viewModel.getSecondaryReminderHour()
+        Integer secondaryHour = reminderViewModel.hasSecondaryReminderTime()
+            ? reminderViewModel.getSecondaryReminderHour()
             : null;
-        Integer secondaryMinute = viewModel.hasSecondaryReminderTime()
-            ? viewModel.getSecondaryReminderMinute()
+        Integer secondaryMinute = reminderViewModel.hasSecondaryReminderTime()
+            ? reminderViewModel.getSecondaryReminderMinute()
             : null;
 
         boolean scheduled = ReminderScheduler.scheduleReminder(
                 requireContext(),
-                viewModel.getReminderHour(),
-                viewModel.getReminderMinute(),
-            secondaryHour,
-            secondaryMinute,
-                viewModel.getFrequency(),
-                viewModel.getTone()
+                reminderViewModel.getReminderHour(),
+                reminderViewModel.getReminderMinute(),
+                secondaryHour,
+                secondaryMinute,
+                reminderViewModel.getFrequency(),
+                reminderViewModel.getTone()
         );
 
         if (scheduled) {
-            viewModel.setReminderScheduled(true);
+            reminderViewModel.setReminderScheduled(true);
         } else {
             Toast.makeText(requireContext(), R.string.reminder_schedule_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Resets the flow so the user can create another reminder.
+    // Adds the newly created reminder times to the pending medication and navigates back.
+    private void addTimesToMedicationAndReturn() {
+        Medication pending = medicationViewModel.getPendingMedication();
+        if (pending != null) {
+            List<String> times = new ArrayList<>(pending.getScheduledTimes());
+            
+            // Format and add the primary time
+            String primaryTime = String.format(Locale.getDefault(), "%02d:%02d", 
+                reminderViewModel.getReminderHour(), reminderViewModel.getReminderMinute());
+            if (!times.contains(primaryTime)) {
+                times.add(primaryTime);
+            }
+
+            // Format and add the secondary time if it exists
+            if (reminderViewModel.hasSecondaryReminderTime()) {
+                String secondaryTime = String.format(Locale.getDefault(), "%02d:%02d", 
+                    reminderViewModel.getSecondaryReminderHour(), reminderViewModel.getSecondaryReminderMinute());
+                if (!times.contains(secondaryTime)) {
+                    times.add(secondaryTime);
+                }
+            }
+
+            // Update the pending medication with the new times
+            medicationViewModel.setPendingMedication(new Medication(pending.getName(), pending.getDosage(), times));
+        }
+
+        // Clear reminder state and return to Add Medication screen
+        reminderViewModel.clear();
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_reminderConfirmation_to_addMedication);
+    }
+
+    // Resets the flow so the user can create another reminder (standard behavior).
     private void restartFlow() {
         ReminderScheduler.cancelAllReminders(requireContext());
-        viewModel.clear();
-
+        reminderViewModel.clear();
         NavHostFragment.findNavController(this)
-                .popBackStack(R.id.reminderTimingFragment, false);
+                .navigate(R.id.action_confirmation_to_home);
     }
 
     // Builds the reminder time summary shown on the confirmation card.
     private String buildTimeSummary() {
-        String primaryTime = viewModel.getFormattedReminderTime(requireContext());
-        if (!viewModel.hasSecondaryReminderTime()) {
+        String primaryTime = reminderViewModel.getFormattedReminderTime(requireContext());
+        if (!reminderViewModel.hasSecondaryReminderTime()) {
             return primaryTime;
         }
 
-        // For Twice Daily, present both selected slots in the confirmation summary.
-        String secondaryTime = viewModel.getFormattedSecondaryReminderTime(requireContext());
+        String secondaryTime = reminderViewModel.getFormattedSecondaryReminderTime(requireContext());
         return getString(R.string.reminder_two_times_summary_template, primaryTime, secondaryTime);
     }
 }

@@ -1,12 +1,12 @@
 package com.example.myapplication;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -14,15 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 // Lets the user enter medication name, dosage, and one or more scheduled times.
 public class AddMedicationFragment extends Fragment {
     private MedicationViewModel viewModel;
     private EditText nameInput;
     private EditText dosageInput;
+    private Spinner dosageUnitSpinner;
     private LinearLayout timesContainer;
     private TextView noTimesText;
     private final List<String> scheduledTimes = new ArrayList<>();
@@ -41,43 +40,50 @@ public class AddMedicationFragment extends Fragment {
 
         nameInput = view.findViewById(R.id.nameInput);
         dosageInput = view.findViewById(R.id.dosageInput);
+        dosageUnitSpinner = view.findViewById(R.id.dosageUnitSpinner);
         timesContainer = view.findViewById(R.id.timesContainer);
         noTimesText = view.findViewById(R.id.noTimesText);
 
-        view.findViewById(R.id.addTimeBtn).setOnClickListener(v -> showTimePicker());
+        // Navigate to Reminder Builder when Add Timer is clicked
+        view.findViewById(R.id.addTimeBtn).setOnClickListener(v -> {
+            saveCurrentStateToViewModel();
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_addMedication_to_reminderTiming);
+        });
+
         view.findViewById(R.id.continueBtn).setOnClickListener(v -> onContinueClicked());
 
         restoreFormStateIfReturningFromReview();
     }
 
-    // Pre-fills the form with pending medication data when the user presses Edit from the review screen.
+    // Saves the current text input to the ViewModel so it's preserved during navigation.
+    private void saveCurrentStateToViewModel() {
+        String name = nameInput.getText().toString().trim();
+        String dosage = dosageInput.getText().toString().trim();
+        viewModel.setPendingMedication(new Medication(name, dosage, new ArrayList<>(scheduledTimes)));
+    }
+
+    // Pre-fills the form with pending medication data when the user returns to this screen.
     private void restoreFormStateIfReturningFromReview() {
         Medication pending = viewModel.getPendingMedication();
         if (pending != null) {
             nameInput.setText(pending.getName());
-            dosageInput.setText(pending.getDosage());
+            
+            // Try to split dosage into value and unit
+            String dosageStr = pending.getDosage();
+            String[] units = getResources().getStringArray(R.array.dosage_units);
+            for (int i = 0; i < units.length; i++) {
+                if (dosageStr.endsWith(units[i])) {
+                    dosageInput.setText(dosageStr.replace(units[i], "").trim());
+                    dosageUnitSpinner.setSelection(i);
+                    break;
+                }
+            }
+
             scheduledTimes.clear();
             scheduledTimes.addAll(pending.getScheduledTimes());
             rebuildTimesUI();
         }
-    }
-
-    // Opens a TimePickerDialog and adds the selected time to the list.
-    private void showTimePicker() {
-        Calendar now = Calendar.getInstance();
-        int hour = now.get(Calendar.HOUR_OF_DAY);
-        int minute = now.get(Calendar.MINUTE);
-
-        new TimePickerDialog(requireContext(), (picker, selectedHour, selectedMinute) -> {
-            String time = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
-            if (!scheduledTimes.contains(time)) {
-                scheduledTimes.add(time);
-                addTimeRow(time);
-                noTimesText.setVisibility(View.GONE);
-            } else {
-                Toast.makeText(requireContext(), "That time is already added.", Toast.LENGTH_SHORT).show();
-            }
-        }, hour, minute, true).show();
     }
 
     // Adds a time row with a remove button to the times container.
@@ -113,13 +119,15 @@ public class AddMedicationFragment extends Fragment {
     // Validates the form and navigates to the review screen if valid.
     private void onContinueClicked() {
         String name = nameInput.getText().toString().trim();
-        String dosage = dosageInput.getText().toString().trim();
+        String dosageValue = dosageInput.getText().toString().trim();
+        String dosageUnit = dosageUnitSpinner.getSelectedItem().toString();
+        String dosage = dosageValue + dosageUnit;
 
         if (name.isEmpty()) {
             nameInput.setError(getString(R.string.add_med_name_required));
             return;
         }
-        if (dosage.isEmpty()) {
+        if (dosageValue.isEmpty()) {
             dosageInput.setError(getString(R.string.add_med_dosage_required));
             return;
         }

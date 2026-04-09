@@ -159,8 +159,6 @@ public class RefillFragment extends AppCompatActivity {
                 if (findBtn != null) {
                     findBtn.setVisibility(View.VISIBLE);
                     findBtn.setOnClickListener(v -> {
-                        // Note: If PharmacyLocatorFragment is a Fragment, this will still crash.
-                        // It should be launched via FragmentManager or be converted to an Activity.
                         Intent intent = new Intent(this, PharmacyLocatorFragment.class);
                         startActivity(intent);
                     });

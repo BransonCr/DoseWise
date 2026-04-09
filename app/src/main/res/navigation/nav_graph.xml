@@ -37,6 +37,14 @@
         <action
             android:id="@+id/action_home_to_refill"
             app:destination="@id/refillFragment" />
+
+        <action
+            android:id="@+id/action_home_to_caregiverDashboard"
+            app:destination="@id/caregiverDashboardFragment" />
+
+        <action
+            android:id="@+id/action_home_to_pharmacyLocator"
+            app:destination="@id/pharmacyLocatorActivity" />
     </fragment>
 
     <fragment
@@ -61,6 +69,9 @@
         <action
             android:id="@+id/action_addMedication_to_reviewMedication"
             app:destination="@id/reviewMedicationFragment" />
+        <action
+            android:id="@+id/action_addMedication_to_reminderTiming"
+            app:destination="@id/reminderTimingFragment" />
     </fragment>
 
     <fragment
@@ -78,6 +89,41 @@
         android:name="com.example.myapplication.MedicationConfirmationFragment"
         android:label="Medication Confirmation"
         tools:layout="@layout/fragment_medication_confirmation" />
+
+    <!-- TASK 4: CAREGIVER MONITORING (Talon) -->
+
+    <fragment
+        android:id="@+id/caregiverDashboardFragment"
+        android:name="com.example.myapplication.CaregiverDashboardFragment"
+        android:label="Caregiver Dashboard"
+        tools:layout="@layout/fragment_caregiver_dashboard">
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_missedAlertList"
+            app:destination="@id/missedAlertListFragment" />
+
+        <action
+            android:id="@+id/action_caregiverDashboard_to_weeklySummary"
+            app:destination="@id/weeklySummaryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/weeklySummaryFragment"
+        android:name="com.example.myapplication.WeeklySummaryFragment"
+        android:label="Weekly Summary"
+        tools:layout="@layout/fragment_weekly_summary" />
+
+    <fragment
+        android:id="@+id/missedAlertListFragment"
+        android:name="com.example.myapplication.MissedAlertListFragment"
+        android:label="Missed Alerts"
+        tools:layout="@layout/fragment_missed_alert_list" />
 
     <!-- TASK 3: REMINDER SETUP (Ben) -->
 
@@ -110,7 +156,13 @@
         <action
             android:id="@+id/action_confirmation_to_home"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/reminderTimingFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_reminderConfirmation_to_addMedication"
+            app:destination="@id/addMedicationFragment"
+            app:popUpTo="@id/addMedicationFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -122,6 +174,14 @@
         <action
             android:id="@+id/action_refill_to_addMedication"
             app:destination="@id/addMedicationFragment" />
+        <action
+            android:id="@+id/action_refill_to_pharmacyLocator"
+            app:destination="@id/pharmacyLocatorActivity" />
     </fragment>
+
+    <activity
+        android:id="@+id/pharmacyLocatorActivity"
+        android:name="com.example.myapplication.PharmacyLocatorFragment"
+        android:label="Pharmacy Locator" />
 
 </navigation>
