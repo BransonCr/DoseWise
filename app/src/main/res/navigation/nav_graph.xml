@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/refillFragment">
 
     <!-- TASK 2: DOSE LOGGING (Aaron) -->
 
@@ -118,7 +118,7 @@
         android:id="@+id/refillFragment"
         android:name="com.example.myapplication.RefillFragment"
         android:label="Refill Tracking"
-        tools:layout="@layout/fragment_refill">
+        tools:layout="@layout/fragment_refill_tracking">
         <action
             android:id="@+id/action_refill_to_addMedication"
             app:destination="@id/addMedicationFragment" />

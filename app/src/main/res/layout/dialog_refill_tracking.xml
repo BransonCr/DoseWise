@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/dialogBox"
+        android:layout_width="380dp"
+        android:layout_height="650dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dialogbox" />
+
+    <ScrollView
+        android:layout_width="380dp"
+        android:layout_height="594dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogBox"
+        app:layout_constraintEnd_toEndOf="@+id/dialogBox"
+        app:layout_constraintStart_toStartOf="@+id/dialogBox"
+        app:layout_constraintTop_toTopOf="@+id/dialogBox">
+
+        <LinearLayout
+            android:id="@+id/medicationGroup"
+            android:layout_width="375dp"
+            android:layout_height="650dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/dialogBox"
+            app:layout_constraintEnd_toEndOf="@+id/dialogBox"
+            app:layout_constraintStart_toStartOf="@+id/dialogBox"
+            app:layout_constraintTop_toTopOf="@+id/dialogBox">
+
+            <TextView
+                android:id="@+id/MedicationTitle"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:text="Add New Medication"
+                android:textColor="#1F6F8B"
+                android:paddingBottom="10dp"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <TextView
+                android:id="@+id/MedicationDetails"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#801F6F8B"
+                android:paddingBottom="10dp"
+                android:text="Enter your mediciation details to start tracking supply" />
+
+            <TextView
+                android:id="@+id/MedicationName"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:text="Mediciation Name"
+                android:textColor="#1F6F8B"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/medNameInput"
+                android:layout_width="335dp"
+                android:layout_height="74dp"
+                android:paddingBottom="10dp"
+                android:textColor="#801F6F8B"
+                android:hint="e.g. Lisinopril" />
+
+            <TextView
+                android:id="@+id/DosageFrequency"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:text="Dosage Frequency"
+                android:paddingBottom="10dp"
+                android:textColor="#1F6F8B"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <Spinner
+                android:id="@+id/DosageFreq"
+                android:layout_width="335dp"
+                android:layout_height="50dp"
+                android:entries="@array/DosageFrequency"
+                android:paddingBottom="10dp"
+                android:textColor="#801F6F8B" />
+
+            <TextView
+                android:id="@+id/TotalPills"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:text="Total Pills"
+                android:paddingBottom="10dp"
+                android:textColor="#1F6F8B"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pillInput"
+                android:layout_width="335dp"
+                android:textColor="#801F6F8B"
+                android:paddingBottom="10dp"
+                android:layout_height="74dp"
+                android:hint="e.g. 90" />
+
+            <TextView
+                android:id="@+id/Startdate"
+                android:layout_width="335dp"
+                android:layout_height="wrap_content"
+                android:text="Start Date"
+                android:textColor="#1F6F8B"
+                android:textSize="18sp"
+                android:paddingBottom="10dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <DatePicker
+                android:id="@+id/date"
+                android:layout_width="335dp"
+                android:paddingBottom="10dp"
+                android:layout_height="174dp"
+                android:textColor="#801F6F8B" />
+
+            <Button
+                android:id="@+id/save_modification"
+                android:layout_width="200dp"
+                android:layout_marginLeft="60dp"
+                android:paddingBottom="10dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#1F6F8B"
+                android:text="Save Modification" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
