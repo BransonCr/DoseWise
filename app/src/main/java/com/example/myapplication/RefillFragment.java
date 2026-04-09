@@ -35,7 +35,7 @@ public class RefillFragment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_refill_tracking);
+        setContentView(R.layout.fragment_refill);
 
         // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);

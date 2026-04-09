@@ -118,7 +118,7 @@
         android:id="@+id/refillFragment"
         android:name="com.example.myapplication.RefillFragment"
         android:label="Refill Tracking"
-        tools:layout="@layout/fragment_refill_tracking">
+        tools:layout="@layout/fragment_refill">
         <action
             android:id="@+id/action_refill_to_addMedication"
             app:destination="@id/addMedicationFragment" />
