@@ -143,6 +143,7 @@
     <!-- Caregiver Dashboard -->
     <string name="caregiver_monitor_title">Caregiver Monitor</string>
     <string name="caregiver_dependent_role_label">Dependent</string>
+    <string name="caregiver_my_profile_label">My Profile</string>
     <string name="caregiver_adherence_title">Today\'s Adherence</string>
     <string name="caregiver_adherence_percentage">%1$d%%</string>
     <string name="caregiver_taken_label">%1$d taken</string>

@@ -96,8 +96,8 @@ public class CaregiverMockData {
         ));
 
         // --- You (current user) — seeds the shared ViewModel weekly arrays ---
-        int[] youTaken  = {2, 2, 1, 2, 2, 1, 2};
-        int[] youMissed = {0, 0, 1, 0, 0, 1, 0};
+        int[] youTaken  = {2, 2, 1, 2, 2, 2, 2};
+        int[] youMissed = {0, 0, 1, 0, 0, 0, 0};
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < youTaken[i]; j++) viewModel.incrementWeeklyTaken(i);
             for (int j = 0; j < youMissed[i]; j++) viewModel.incrementWeeklyMissed(i);

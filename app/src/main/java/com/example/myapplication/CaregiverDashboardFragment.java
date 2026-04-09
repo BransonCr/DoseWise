@@ -45,6 +45,8 @@ public class CaregiverDashboardFragment extends Fragment {
     private MaterialButton weeklyTab;
     private TextView initialsText;
     private TextView nameText;
+    private TextView roleText;
+    private TextView upcomingCountText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +67,8 @@ public class CaregiverDashboardFragment extends Fragment {
         weeklyTab = view.findViewById(R.id.weeklyTab);
         initialsText = view.findViewById(R.id.dependentInitials);
         nameText = view.findViewById(R.id.dependentNameText);
+        roleText = view.findViewById(R.id.dependentRoleText);
+        upcomingCountText = view.findViewById(R.id.upcomingCountText);
 
         applyWindowInsets(view);
         refreshDashboard();
@@ -136,6 +140,7 @@ public class CaregiverDashboardFragment extends Fragment {
         if (name == null || name.isEmpty()) {
             initialsText.setText("?");
             nameText.setText(R.string.caregiver_no_dependent);
+            roleText.setText(R.string.caregiver_dependent_role_label);
             return;
         }
 
@@ -151,6 +156,9 @@ public class CaregiverDashboardFragment extends Fragment {
                 : String.valueOf(parts[0].charAt(0));
         initialsText.setText(initials.toUpperCase());
         nameText.setText(name);
+        roleText.setText(CaregiverMockData.isCurrentUser(name)
+                ? getString(R.string.caregiver_my_profile_label)
+                : getString(R.string.caregiver_dependent_role_label));
     }
 
     private void bindAdherenceStats(TextView percentageText, TextView takenText, TextView missedText) {

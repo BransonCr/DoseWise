@@ -1,5 +1,4 @@
 package com.example.myapplication;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,6 @@ public class HomeFragment extends Fragment {
         medicationContainer = view.findViewById(R.id.medicationListContainer);
         TextView streakText = view.findViewById(R.id.streakCountText);
         View missedDoseBtn = view.findViewById(R.id.viewMissedDosesBtn);
-
         View addMedicationBtn = view.findViewById(R.id.addMedicationBtn);
         View setupRemindersBtn = view.findViewById(R.id.setupRemindersBtn);
         View refillTrackingBtn = view.findViewById(R.id.refillTrackingBtn);
@@ -91,15 +89,15 @@ public class HomeFragment extends Fragment {
         nameText.setText(med.getName());
         updateStatusDisplay(statusText, statusIcon, med.getName());
 
-        // 🔗 CRITICAL: Pass medication name when navigating to confirmation
+        // CRITICAL: Pass medication name when navigating to confirmation
         card.setOnClickListener(v -> openDoseConfirmation(med.getName()));
         card.setClickable(true);
         card.setFocusable(true);
-
         return card;
     }
 
     // Sets the status icon, label, and color for a medication.
+    // FIXED (Problem 1): Differentiates UPCOMING (neutral clock/grey) from MISSED (red X/accent).
     private void updateStatusDisplay(TextView statusText, ImageView statusIcon, String medName) {
         DoseStatus status = viewModel.getDoseStatusMap().getOrDefault(medName, DoseStatus.UPCOMING);
         statusText.setText(status.name().toLowerCase());
@@ -127,7 +125,7 @@ public class HomeFragment extends Fragment {
     // Opens the confirmation prompt WITH the medication name argument
     private void openDoseConfirmation(String medName) {
         Bundle args = new Bundle();
-        args.putString("medicationName", medName);  // ← This is what was missing
+        args.putString("medicationName", medName);  // 📝 This is what was missing
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_home_to_dose_confirmation, args);
     }
