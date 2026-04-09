@@ -6,51 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/screen_background">
 
-    <LinearLayout
-        android:id="@+id/bottomNavBar"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/navbar_background"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/homeNavBtn"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/caregiver_nav_home_button"
-            android:textColor="@color/light_blue_600"
-            android:textSize="10sp"
-            app:icon="@drawable/icon_home"
-            app:iconGravity="top"
-            app:iconSize="24sp"
-            app:iconTint="@color/light_blue_600" />
-
-        <Button
-            android:id="@+id/caregiverMonitorBtn"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/caregiver_nav_monitor_button"
-            android:textColor="@color/text_secondary"
-            android:textSize="10sp"
-            app:icon="@drawable/icon_graph"
-            app:iconGravity="top"
-            app:iconSize="24sp"
-            app:iconTint="@color/text_secondary" />
-    </LinearLayout>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -176,6 +137,39 @@
                 android:text="@string/home_view_missed_button"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/primary"
+                app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/setupRemindersBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_setup_reminders_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/secondary"
+                app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refillTrackingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_refill_tracking_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/findPharmacyBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingVertical="14dp"
+                android:text="@string/home_find_pharmacy_button"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/secondary"
                 app:cornerRadius="18dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

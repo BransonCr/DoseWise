@@ -72,26 +72,19 @@ public class CaregiverDashboardFragment extends Fragment {
         alertsTab.setOnClickListener(v -> showAlertsTab());
         weeklyTab.setOnClickListener(v -> showWeeklyTab());
         view.findViewById(R.id.chevronText).setOnClickListener(v -> showSwitchDependentDialog());
-        view.findViewById(R.id.button).setOnClickListener(v -> navigateToHome());
     }
 
-    // Applies system bar insets so the header clears the status bar and navbar clears the gesture bar.
+    // Applies system bar insets so the header clears the status bar.
     private void applyWindowInsets(View view) {
         int p = (int) (24 * getResources().getDisplayMetrics().density);
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             view.findViewById(R.id.headerSection).setPadding(p, bars.top + p, p, p);
-            view.findViewById(R.id.navbar).setPadding(0, 0, 0, bars.bottom);
             return insets;
         });
-    }
+        }
 
-    private void navigateToHome() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_caregiverDashboard_to_home);
-    }
-
-    // Shows a single-choice dialog to switch the linked dependent.
+        // Shows a single-choice dialog to switch the linked dependent.
     private void showSwitchDependentDialog() {
         String current = viewModel.getCaregiverDependentName();
         String[] names = CaregiverMockData.DEPENDENT_NAMES;
@@ -138,11 +131,20 @@ public class CaregiverDashboardFragment extends Fragment {
 
     private void bindDependentInfo(TextView initialsText, TextView nameText) {
         String name = viewModel.getCaregiverDependentName();
+        TextView roleText = rootView.findViewById(R.id.dependentRoleText);
+
         if (name == null || name.isEmpty()) {
             initialsText.setText("?");
             nameText.setText(R.string.caregiver_no_dependent);
             return;
         }
+
+        if (CaregiverMockData.isCurrentUser(name)) {
+            roleText.setText("My Profile");
+        } else {
+            roleText.setText(R.string.caregiver_dependent_role_label);
+        }
+
         String[] parts = name.trim().split("\\s+");
         String initials = parts.length >= 2
                 ? String.valueOf(parts[0].charAt(0)) + parts[parts.length - 1].charAt(0)
@@ -153,25 +155,29 @@ public class CaregiverDashboardFragment extends Fragment {
 
     private void bindAdherenceStats(TextView percentageText, TextView takenText, TextView missedText) {
         String owner = viewModel.getCaregiverDependentName();
-        long taken, missed;
+        TextView upcomingText = rootView.findViewById(R.id.upcomingCountText);
+        long taken, missed, upcoming;
         int total;
         if (CaregiverMockData.isCurrentUser(owner)) {
             List<Medication> meds = viewModel.getMedicationList();
             Map<String, DoseStatus> statusMap = viewModel.getDoseStatusMap();
             taken  = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.TAKEN).count();
             missed = meds.stream().filter(m -> statusMap.get(m.getName()) == DoseStatus.MISSED).count();
+            upcoming = meds.stream().filter(m -> statusMap.getOrDefault(m.getName(), DoseStatus.UPCOMING) == DoseStatus.UPCOMING).count();
             total  = meds.size();
         } else {
             List<CaregiverMockData.MedRecord> meds =
                     CaregiverMockData.medsFor(owner);
             taken  = meds.stream().filter(r -> r.status == DoseStatus.TAKEN).count();
             missed = meds.stream().filter(r -> r.status == DoseStatus.MISSED).count();
+            upcoming = meds.stream().filter(r -> r.status == DoseStatus.UPCOMING).count();
             total  = meds.size();
         }
         int percentage = total > 0 ? (int) (taken * 100 / total) : 0;
         percentageText.setText(getString(R.string.caregiver_adherence_percentage, percentage));
         takenText.setText(getString(R.string.caregiver_taken_label, taken));
         missedText.setText(getString(R.string.caregiver_missed_label, missed));
+        upcomingText.setText(getString(R.string.caregiver_upcoming_label, upcoming));
     }
 
     private void renderMissedDoses() {

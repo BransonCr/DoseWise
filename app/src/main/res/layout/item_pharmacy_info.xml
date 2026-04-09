@@ -36,15 +36,17 @@
                     android:id="@+id/textView11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="75dp"
-                    android:text="0.3 miles" />
+                    android:paddingStart="75dp"
+                    android:text="0.3 miles"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:id="@+id/textView12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="70dp"
-                    android:text="Open Now" />
+                    android:paddingStart="70dp"
+                    android:text="Open Now"
+                    tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
         </LinearLayout>
@@ -89,9 +91,10 @@
                     android:id="@+id/Time"
                     android:layout_width="164dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="63dp"
+                    android:paddingStart="63dp"
                     android:text="8:00AM - 10:00PM"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
         </LinearLayout>
@@ -138,9 +141,9 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="40dp"
                 android:backgroundTint="@color/primary"
                 android:gravity="center"
-                android:layout_marginLeft="40dp"
                 android:text="Call Pharmacy"
                 android:textColor="@color/white"
                 android:textSize="10sp"

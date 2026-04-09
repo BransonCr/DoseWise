@@ -34,13 +34,35 @@ public class HomeFragment extends Fragment {
         View missedDoseBtn = view.findViewById(R.id.viewMissedDosesBtn);
 
         View addMedicationBtn = view.findViewById(R.id.addMedicationBtn);
-        View caregiverMonitorBtn = view.findViewById(R.id.caregiverMonitorBtn);
+        View setupRemindersBtn = view.findViewById(R.id.setupRemindersBtn);
+        View refillTrackingBtn = view.findViewById(R.id.refillTrackingBtn);
+        View findPharmacyBtn = view.findViewById(R.id.findPharmacyBtn);
 
         bindStreakCount(streakText);
         renderMedicationList();
         missedDoseBtn.setOnClickListener(v -> navigateToMissedDoses());
         addMedicationBtn.setOnClickListener(v -> navigateToAddMedication());
-        caregiverMonitorBtn.setOnClickListener(v -> navigateToCaregiverDashboard());
+        setupRemindersBtn.setOnClickListener(v -> navigateToReminderTiming());
+        refillTrackingBtn.setOnClickListener(v -> navigateToRefill());
+        findPharmacyBtn.setOnClickListener(v -> navigateToPharmacyLocator());
+    }
+
+    // Navigates to the pharmacy locator screen.
+    private void navigateToPharmacyLocator() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_pharmacyLocator);
+    }
+
+    // Navigates to the reminder timing screen.
+    private void navigateToReminderTiming() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_reminderTiming);
+    }
+
+    // Navigates to the refill tracking screen.
+    private void navigateToRefill() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_home_to_refill);
     }
 
     // Updates the streak counter text from the ViewModel.
@@ -81,10 +103,22 @@ public class HomeFragment extends Fragment {
     private void updateStatusDisplay(TextView statusText, ImageView statusIcon, String medName) {
         DoseStatus status = viewModel.getDoseStatusMap().getOrDefault(medName, DoseStatus.UPCOMING);
         statusText.setText(status.name().toLowerCase());
-        int iconRes = status == DoseStatus.TAKEN
-                ? android.R.drawable.checkbox_on_background
-                : android.R.drawable.ic_menu_close_clear_cancel;
-        int colorRes = status == DoseStatus.TAKEN ? R.color.success : R.color.accent;
+        
+        int iconRes;
+        int colorRes;
+        
+        if (status == DoseStatus.TAKEN) {
+            iconRes = android.R.drawable.checkbox_on_background;
+            colorRes = R.color.success;
+        } else if (status == DoseStatus.MISSED) {
+            iconRes = android.R.drawable.ic_menu_close_clear_cancel;
+            colorRes = R.color.accent;
+        } else {
+            // UPCOMING or other neutral status
+            iconRes = android.R.drawable.ic_menu_recent_history; // Neutral clock icon
+            colorRes = R.color.text_secondary;
+        }
+        
         statusIcon.setImageResource(iconRes);
         statusIcon.setColorFilter(ContextCompat.getColor(requireContext(), colorRes));
         statusText.setTextColor(ContextCompat.getColor(requireContext(), colorRes));
@@ -108,11 +142,5 @@ public class HomeFragment extends Fragment {
     private void navigateToAddMedication() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_home_to_addMedication);
-    }
-
-    // Navigates to the caregiver monitoring dashboard.
-    private void navigateToCaregiverDashboard() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_home_to_caregiverDashboard);
     }
 }

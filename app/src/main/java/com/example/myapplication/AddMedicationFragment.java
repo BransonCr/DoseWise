@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class AddMedicationFragment extends Fragment {
     private MedicationViewModel viewModel;
     private EditText nameInput;
     private EditText dosageInput;
+    private Spinner dosageUnitSpinner;
     private LinearLayout timesContainer;
     private TextView noTimesText;
     private final List<String> scheduledTimes = new ArrayList<>();
@@ -41,6 +43,7 @@ public class AddMedicationFragment extends Fragment {
 
         nameInput = view.findViewById(R.id.nameInput);
         dosageInput = view.findViewById(R.id.dosageInput);
+        dosageUnitSpinner = view.findViewById(R.id.dosageUnitSpinner);
         timesContainer = view.findViewById(R.id.timesContainer);
         noTimesText = view.findViewById(R.id.noTimesText);
 
@@ -55,7 +58,18 @@ public class AddMedicationFragment extends Fragment {
         Medication pending = viewModel.getPendingMedication();
         if (pending != null) {
             nameInput.setText(pending.getName());
-            dosageInput.setText(pending.getDosage());
+            
+            // Try to split dosage into value and unit
+            String dosageStr = pending.getDosage();
+            String[] units = getResources().getStringArray(R.array.dosage_units);
+            for (int i = 0; i < units.length; i++) {
+                if (dosageStr.endsWith(units[i])) {
+                    dosageInput.setText(dosageStr.replace(units[i], "").trim());
+                    dosageUnitSpinner.setSelection(i);
+                    break;
+                }
+            }
+
             scheduledTimes.clear();
             scheduledTimes.addAll(pending.getScheduledTimes());
             rebuildTimesUI();
@@ -113,13 +127,15 @@ public class AddMedicationFragment extends Fragment {
     // Validates the form and navigates to the review screen if valid.
     private void onContinueClicked() {
         String name = nameInput.getText().toString().trim();
-        String dosage = dosageInput.getText().toString().trim();
+        String dosageValue = dosageInput.getText().toString().trim();
+        String dosageUnit = dosageUnitSpinner.getSelectedItem().toString();
+        String dosage = dosageValue + dosageUnit;
 
         if (name.isEmpty()) {
             nameInput.setError(getString(R.string.add_med_name_required));
             return;
         }
-        if (dosage.isEmpty()) {
+        if (dosageValue.isEmpty()) {
             dosageInput.setError(getString(R.string.add_med_dosage_required));
             return;
         }
