@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -13,16 +12,18 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefillFragment extends Fragment {
+public class RefillFragment extends AppCompatActivity {
 
     private MedicationViewModel viewModel;
     private LinearLayout listContainer;
@@ -30,56 +31,48 @@ public class RefillFragment extends Fragment {
     private View attentionNeededContainer;
     private TextView attentionNeededCount;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_refill, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.fragment_refill);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
+        // Initialize common views
+        listContainer = findViewById(R.id.medicationListContainer);
 
-        listContainer = view.findViewById(R.id.medicationListContainer);
-        if (listContainer == null) {
-            listContainer = view.findViewById(R.id.medicationListContainer);
-        }
-        emptyStateContainer = view.findViewById(R.id.emptyStateContainer);
-        attentionNeededContainer = view.findViewById(R.id.attentionNeededContainer);
-        attentionNeededCount = view.findViewById(R.id.attentionNeededCount);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         refreshList();
-
-        View.OnClickListener showDialogListener = v -> showAddDialog();
-
-        View topBtn = view.findViewById(R.id.addMedicationBtnTop);
-        if (topBtn != null) {
-            topBtn.setOnClickListener(showDialogListener);
-        }
-
-        View emptyBtn = view.findViewById(R.id.addMedicationBtnEmpty);
-        if (emptyBtn != null) {
-            emptyBtn.setOnClickListener(showDialogListener);
-        }
     }
 
-    private void showAddDialog() {
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_medication, null);
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+    public void showAddDialog(View view){
+        Button buttonAddMedTop = findViewById(R.id.addMedicationBtnTop);
+        if (buttonAddMedTop != null) {
+            buttonAddMedTop.setVisibility(View.GONE);
+        }
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_refill_tracking, null);
+
+        EditText nameInput = dialogView.findViewById(R.id.medNameInput);
+        EditText pillInput = dialogView.findViewById(R.id.pillInput);
+        Spinner frequencySpinner = dialogView.findViewById(R.id.DosageFreq);
+        DatePicker datePicker = dialogView.findViewById(R.id.date);
+        Button saveBtn = dialogView.findViewById(R.id.save_modification);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .create();
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
-
-        EditText nameInput = dialogView.findViewById(R.id.medNameInput);
-        EditText pillInput = dialogView.findViewById(R.id.pillInput);
-        Spinner frequencySpinner = dialogView.findViewById(R.id.Spinner);
-        DatePicker datePicker = dialogView.findViewById(R.id.date);
-        Button saveBtn = dialogView.findViewById(R.id.save_modification);
 
         saveBtn.setOnClickListener(v -> {
             String name = nameInput.getText().toString().trim();
@@ -92,7 +85,7 @@ public class RefillFragment extends Fragment {
 
                 String encodedDosage = "10mg|" + totalPills + "|" + frequency + "|" + startDate;
                 viewModel.addMedication(new Medication(name, encodedDosage, new ArrayList<>()));
-                
+
                 refreshList();
                 dialog.dismiss();
             }
@@ -102,17 +95,15 @@ public class RefillFragment extends Fragment {
     }
 
     private void refreshList() {
+        if (viewModel == null) return;
         List<Medication> medications = viewModel.getMedicationList();
 
         if (listContainer == null) {
-            View view = getView();
-            if (view != null) {
-                listContainer = view.findViewById(R.id.medicationListContainer);
-            }
+            listContainer = findViewById(R.id.medicationListContainer);
         }
-        
+
         if (listContainer == null) return;
-        
+
         listContainer.removeAllViews();
 
         if (medications.isEmpty()) {
@@ -125,8 +116,8 @@ public class RefillFragment extends Fragment {
         int lowSupplyCount = 0;
 
         for (Medication med : medications) {
-            View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_refill_medication, listContainer, false);
-            
+            View itemView = LayoutInflater.from(this).inflate(R.layout.item_refill_medication, listContainer, false);
+
             String[] data = med.getDosage().split("\\|");
             if (data.length < 4) {
                 ((TextView) itemView.findViewById(R.id.medNameText)).setText(med.getName());
@@ -149,23 +140,29 @@ public class RefillFragment extends Fragment {
 
             ProgressBar pb = itemView.findViewById(R.id.supplyProgressBar);
             if (pb != null) {
-                // Assume 30 days is 100% for the progress bar but can change later
+                // Assume 30 days is 100% for the progress bar
                 pb.setProgress(Math.min(100, (daysRemaining * 100) / 30));
             }
 
             if (isLow) {
                 lowSupplyCount++;
-                itemView.findViewById(R.id.lowSupplyWarning).setVisibility(View.VISIBLE);
+                View warning = itemView.findViewById(R.id.lowSupplyWarning);
+                if (warning != null) warning.setVisibility(View.VISIBLE);
+
                 TextView lowSupplyDetails = itemView.findViewById(R.id.lowSupplyDetails);
-                lowSupplyDetails.setVisibility(View.VISIBLE);
-                lowSupplyDetails.setText("Low supply! Only " + daysRemaining + " days remaining");
-                
+                if (lowSupplyDetails != null) {
+                    lowSupplyDetails.setVisibility(View.VISIBLE);
+                    lowSupplyDetails.setText("Low supply! Only " + daysRemaining + " days remaining");
+                }
+
                 Button findBtn = itemView.findViewById(R.id.findPharmacyBtn);
-                findBtn.setVisibility(View.VISIBLE);
-                findBtn.setOnClickListener(v -> {
-                    androidx.navigation.fragment.NavHostFragment.findNavController(this)
-                            .navigate(R.id.action_refill_to_pharmacyLocator);
-                });
+                if (findBtn != null) {
+                    findBtn.setVisibility(View.VISIBLE);
+                    findBtn.setOnClickListener(v -> {
+                        Intent intent = new Intent(this, PharmacyLocatorFragment.class);
+                        startActivity(intent);
+                    });
+                }
             }
 
             listContainer.addView(itemView);

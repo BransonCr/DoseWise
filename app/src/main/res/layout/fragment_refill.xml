@@ -5,127 +5,99 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RefillFragment"
-    android:background="@color/screen_background">
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addMedicationBtnTop"
-        android:layout_width="165dp"
-        android:layout_height="53dp"
-        android:paddingVertical="14dp"
-        android:text="+ Add Medication"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/primary"
-        app:cornerRadius="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.934"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Refill Tracking"
-        android:textColor="@color/text_primary"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="362dp"
-        android:layout_height="37dp"
-        android:text="Monitor your medication supply and refill needs"
-        android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.326"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.144" />
+    tools:context=".MainActivity"
+    android:background="#F2F6F7">
 
     <LinearLayout
-        android:id="@+id/attentionNeededContainer"
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/dialogbox"
-        android:backgroundTint="#FFE0E0"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/textView2">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⚠️ Attention Needed!"
-            android:textColor="#D32F2F"
-            android:textStyle="bold"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/attentionNeededCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="medications have low supply"
-            android:textColor="#D32F2F"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/refillScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:fillViewport="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.38"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/attentionNeededContainer">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.043">
 
         <LinearLayout
-            android:id="@+id/medicationListContainer"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp" />
-    </androidx.core.widget.NestedScrollView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/emptyStateContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView2">
-
-        <Button
-            android:id="@+id/addMedicationBtnEmpty"
-            android:layout_width="165dp"
-            android:layout_height="53dp"
-            android:paddingVertical="14dp"
-            android:text="+ Add Medication"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/primary"
-            app:cornerRadius="18dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:text="Refill Tracking"
+                android:textColor="#102A43"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064" />
+
+            <Button
+                android:id="@+id/addMedicationBtnTop"
+                android:layout_width="165dp"
+                android:layout_height="53dp"
+                android:paddingVertical="14dp"
+                android:text="+ Add Medication"
+                android:textAllCaps="false"
+                app:backgroundTint="#1F6F8B"
+                app:cornerRadius="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.865"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.06" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="362dp"
+            android:layout_height="37dp"
+            android:text="Monitor your medication supply and refill needs"
+            android:textColor="#52616B"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.326"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.682" />
+            app:layout_constraintVertical_bias="0.135" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="364dp"
+        android:layout_height="383dp"
+        android:gravity="center"
+        android:id="@+id/medicationListContainer"
+        android:orientation="vertical"
+        android:background="@drawable/dottedborder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/pill_capsule"
+            tools:layout_editor_absoluteX="105dp"
+            tools:layout_editor_absoluteY="224dp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -133,7 +105,7 @@
             android:layout_height="33dp"
             android:gravity="center"
             android:text="No medications tracked"
-            android:textColor="@color/text_secondary"
+            android:textColor="#52616B"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,9 +118,10 @@
             android:id="@+id/textView5"
             android:layout_width="296dp"
             android:layout_height="58dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="What are you waiting for? Add your 1st Medication to start tracking your supply?"
-            android:textColor="@color/text_secondary"
+            android:textColor="#52616B"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -157,17 +130,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.55" />
 
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="169dp"
-            android:layout_height="150dp"
+        <Button
+            android:id="@+id/addMedicationBtnBottom"
+            android:layout_width="165dp"
+            android:layout_height="53dp"
+            android:onClick="showAddDialog"
+            android:paddingVertical="14dp"
+            android:text="+ Add Medication"
+            android:textAllCaps="false"
+            app:backgroundTint="#1F6F8B"
+            app:cornerRadius="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.298"
-            app:srcCompat="@drawable/baseline_medication_24" />
+            app:layout_constraintVertical_bias="0.682" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

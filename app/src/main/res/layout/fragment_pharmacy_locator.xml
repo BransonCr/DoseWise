@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen_background"
+    android:background="#F2F6F7"
     tools:context=".PharmacyLocatorFragment">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_width="248dp"
         android:layout_height="32dp"
         android:text="Nearby locations for your refill"
-        android:textColor="@color/text_secondary"
+        android:textColor="#52616B"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:text="Back"
         android:textAllCaps="false"
         android:textStyle="bold"
-        app:backgroundTint="@color/primary"
+        app:backgroundTint="#1F6F8B"
         app:cornerRadius="10dp"
         app:icon="@drawable/baseline_arrow_back_24"
         app:iconGravity="textStart"
@@ -49,7 +49,7 @@
         android:text="Search"
         android:textAllCaps="false"
         android:textStyle="bold"
-        app:backgroundTint="@color/primary"
+        app:backgroundTint="#1F6F8B"
         app:cornerRadius="10dp"
         app:icon="@drawable/baseline_navigation_24"
         app:iconGravity="textStart"
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Find A Pharmacy"
-        android:textColor="@color/text_primary"
+        android:textColor="#102A43"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -106,8 +106,9 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
-        android:layout_width="381dp"
+        android:layout_width="0dp"
         android:layout_height="510dp"
+        android:contentDescription="Map showing nearby pharmacies"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.416"
