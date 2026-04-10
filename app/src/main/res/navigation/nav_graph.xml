@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/refillFragment">
+    app:startDestination="@id/homeFragment">
 
     <!-- TASK 2: DOSE LOGGING (Aaron) -->
 
@@ -44,7 +44,7 @@
 
         <action
             android:id="@+id/action_home_to_pharmacyLocator"
-            app:destination="@id/pharmacyLocatorActivity" />
+            app:destination="@id/pharmacyLocatorFragment" />
     </fragment>
 
     <fragment
@@ -176,12 +176,13 @@
             app:destination="@id/addMedicationFragment" />
         <action
             android:id="@+id/action_refill_to_pharmacyLocator"
-            app:destination="@id/pharmacyLocatorActivity" />
+            app:destination="@id/pharmacyLocatorFragment" />
     </fragment>
 
-    <activity
-        android:id="@+id/pharmacyLocatorActivity"
+    <fragment
+        android:id="@+id/pharmacyLocatorFragment"
         android:name="com.example.myapplication.PharmacyLocatorFragment"
-        android:label="Pharmacy Locator" />
+        android:label="Pharmacy Locator"
+        tools:layout="@layout/fragment_pharmacy_locator" />
 
 </navigation>

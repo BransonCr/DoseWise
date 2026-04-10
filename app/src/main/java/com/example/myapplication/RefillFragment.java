@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -12,18 +13,20 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefillFragment extends AppCompatActivity {
+public class RefillFragment extends Fragment {
 
     private MedicationViewModel viewModel;
     private LinearLayout listContainer;
@@ -31,19 +34,32 @@ public class RefillFragment extends AppCompatActivity {
     private View attentionNeededContainer;
     private TextView attentionNeededCount;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_refill);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_refill, container, false);
+    }
 
-        // Initialize ViewModel
-        viewModel = new ViewModelProvider(this).get(MedicationViewModel.class);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize ViewModel (Shared with Activity as per conventions)
+        viewModel = new ViewModelProvider(requireActivity()).get(MedicationViewModel.class);
 
         // Initialize common views
-        listContainer = findViewById(R.id.medicationListContainer);
+        listContainer = view.findViewById(R.id.medicationListContainer);
+        attentionNeededContainer = view.findViewById(R.id.attentionNeededContainer);
+        attentionNeededCount = view.findViewById(R.id.attentionNeededCount);
+        emptyStateContainer = view.findViewById(R.id.emptyStateContainer);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        // Set up "Add Medication" button (the one in the layout)
+        Button addBtnTop = view.findViewById(R.id.addMedicationBtnTop);
+        if (addBtnTop != null) {
+            addBtnTop.setOnClickListener(this::showAddDialog);
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -53,12 +69,7 @@ public class RefillFragment extends AppCompatActivity {
     }
 
     public void showAddDialog(View view){
-        Button buttonAddMedTop = findViewById(R.id.addMedicationBtnTop);
-        if (buttonAddMedTop != null) {
-            buttonAddMedTop.setVisibility(View.GONE);
-        }
-
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_refill_tracking, null);
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_refill_tracking, null);
 
         EditText nameInput = dialogView.findViewById(R.id.medNameInput);
         EditText pillInput = dialogView.findViewById(R.id.pillInput);
@@ -66,7 +77,7 @@ public class RefillFragment extends AppCompatActivity {
         DatePicker datePicker = dialogView.findViewById(R.id.date);
         Button saveBtn = dialogView.findViewById(R.id.save_modification);
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .create();
 
@@ -95,14 +106,8 @@ public class RefillFragment extends AppCompatActivity {
     }
 
     private void refreshList() {
-        if (viewModel == null) return;
+        if (viewModel == null || listContainer == null) return;
         List<Medication> medications = viewModel.getMedicationList();
-
-        if (listContainer == null) {
-            listContainer = findViewById(R.id.medicationListContainer);
-        }
-
-        if (listContainer == null) return;
 
         listContainer.removeAllViews();
 
@@ -116,7 +121,7 @@ public class RefillFragment extends AppCompatActivity {
         int lowSupplyCount = 0;
 
         for (Medication med : medications) {
-            View itemView = LayoutInflater.from(this).inflate(R.layout.item_refill_medication, listContainer, false);
+            View itemView = LayoutInflater.from(requireContext()).inflate(R.layout.item_refill_medication, listContainer, false);
 
             String[] data = med.getDosage().split("\\|");
             if (data.length < 4) {
@@ -140,7 +145,6 @@ public class RefillFragment extends AppCompatActivity {
 
             ProgressBar pb = itemView.findViewById(R.id.supplyProgressBar);
             if (pb != null) {
-                // Assume 30 days is 100% for the progress bar
                 pb.setProgress(Math.min(100, (daysRemaining * 100) / 30));
             }
 
@@ -159,8 +163,7 @@ public class RefillFragment extends AppCompatActivity {
                 if (findBtn != null) {
                     findBtn.setVisibility(View.VISIBLE);
                     findBtn.setOnClickListener(v -> {
-                        Intent intent = new Intent(this, PharmacyLocatorFragment.class);
-                        startActivity(intent);
+                        Navigation.findNavController(v).navigate(R.id.action_refill_to_pharmacyLocator);
                     });
                 }
             }

@@ -4,7 +4,7 @@
         <rotate
             android:fromDegrees="90"
             android:toDegrees="90"
-            android:drawable="@drawable/horizontaldialogbox"
+            android:drawable="@drawable/dialogbox"
             android:pivotX="0%"/>
     </item>
 </layer-list>

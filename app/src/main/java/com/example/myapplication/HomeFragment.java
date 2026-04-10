@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
         int colorRes;
         
         if (status == DoseStatus.TAKEN) {
-            iconRes = android.R.drawable.checkbox_on_background;
+            iconRes = R.drawable.icon_check;
             colorRes = R.color.success;
         } else if (status == DoseStatus.MISSED) {
             iconRes = android.R.drawable.ic_menu_close_clear_cancel;
